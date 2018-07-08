@@ -1,0 +1,273 @@
+﻿
+@{
+    Layout = "~/Views/Shared/_LayoutUser.cshtml";
+    ViewBag.Title = "Trang của bạn";
+}
+
+<style>
+    .w3-container {
+        padding: 0px;
+        margin: 0px;
+    }
+
+    .title-frame {
+        background-color: #0b3147;
+        color: white;
+        text-decoration: underline;
+        padding: 10px;
+    }
+
+    .img-avartar {
+        border-radius: 50%;
+        width: 50%;
+        height: 50%;
+    }
+
+    .fieldset {
+        text-align: left;
+        width: 80%;
+        padding: 0px;
+    }
+
+    .w3-col p button {
+        background-color: #0b3147;
+        color: white;
+    }
+
+    @@media only screen and (max-width: 767px) {
+        .img-avartar {
+            width: 100%;
+            height: 100%;
+        }
+
+        .fieldset {
+            width: 100%;
+        }
+    }
+</style>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#trang-cua-ban").addClass("active");
+    })
+</script>
+
+
+<!--THÔNG TIN CÁ NHÂN-->
+<fieldset class="fieldset w3-card">
+    <div style="background-color: #0b3147;">
+        <label class="title-frame">Thông tin cá nhân</label>
+    </div>
+    <div class="w3-row" style="padding: 10px;">
+        <div class="w3-col w3-container s9 m7 l8">
+            <div class="w3-row">
+                <div class="w3-col w3-container s5 m4 l3"><label>Mã:</label></div>
+                <div class="w3-col w3-container s7 m8 l9">ND001</div>
+            </div>
+            <div class="w3-row">
+                <div class="w3-col w3-container s5 m4 l3"><label>Họ tên:</label></div>
+                <div class="w3-col w3-container s7 m8 l9">Hoàng Thị Kim Phụng</div>
+            </div>
+            <div class="w3-row">
+                <div class="w3-col w3-container s5 m4 l3"><label>Giới tính:</label></div>
+                <div class="w3-col w3-container s7 m8 l9">Nữ</div>
+            </div>
+            <div class="w3-row">
+                <div class="w3-col w3-container s5 m4 l3"><label>Ngày sinh:</label></div>
+                <div class="w3-col w3-container s7 m8 l9">07/09/1994</div>
+            </div>
+            <div class="w3-row">
+                <div class="w3-col w3-container s5 m4 l3"><label>Nơi sinh:</label></div>
+                <div class="w3-col w3-container s7 m8 l9">Đăk Lăk</div>
+            </div>
+            <div class="w3-row">
+                <div class="w3-col w3-container s5 m4 l3"><label>Số điện thoại:</label></div>
+                <div class="w3-col w3-container s7 m8 l9">01668174561</div>
+            </div>
+            <div class="w3-row">
+                <div class="w3-col w3-container s5 m4 l3"><label>CMND:</label></div>
+                <div class="w3-col w3-container s7 m8 l9">541386440</div>
+            </div>
+            <div class="w3-row">
+                <div class="w3-col w3-container s5 m4 l3"><label>Email:</label></div>
+                <div class="w3-col w3-container s7 m8 l9">hoangkimphung070994@gmail.com</div>
+            </div>
+            <div class="w3-row">
+                <div class="w3-col w3-container s5 m4 l3"><label>Địa chỉ:</label></div>
+                <div class="w3-col w3-container s7 m8 l9">1 Võ Văn Ngân, Phường Linh Chiểu, Quận Thủ Đức</div>
+            </div>
+            <div class="w3-row">
+                <div class="w3-col w3-container" style="text-align: right;">
+                    <p>
+                        <button class="w3-button w3-round-large" data-toggle="modal" data-target="#editThongTinCaNhanUserModal">
+                            <i class="glyphicon glyphicon-edit"></i> Cập nhật
+                        </button>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="w3-col w3-container s3 m5 l4">
+            <img class="img-avartar" src="./Picture/doremon.png">
+        </div>
+    </div>
+</fieldset>
+<hr />
+<!--THÔNG TIN TÀI KHOẢN-->
+<fieldset class="fieldset w3-card">
+    <div style="background-color: #0b3147;">
+        <label class="title-frame">Thông tin tài khoản</label>
+    </div>
+    <div class="w3-row" style="padding: 10px;">
+        <div class="w3-col w3-container s9 m7 l8">
+            <div class="w3-row">
+                <div class="w3-col w3-container s8 m4 l4"><label>Tên tài khoản:</label></div>
+                <div class="w3-col w3-container s4 m8 l8">ND001</div>
+            </div>
+            <div class="w3-row">
+                <div class="w3-col w3-container s8 m4 l4"><label>Mật khẩu:</label></div>
+                <div class="w3-col w3-container s4 m8 l8">HoangPhung</div>
+            </div>
+            <div class="w3-row">
+                <div class="w3-col w3-container s8 m4 l4"><label>Xác thực đăng nhập:</label></div>
+                <div class="w3-col w3-container s4 m8 l8">SMS</div>
+            </div>
+            <div class="w3-row">
+                <div class="w3-col w3-container" style="text-align: right;">
+                    <p>
+                        <button class="w3-button w3-round-large" data-toggle="modal" data-target="#editThongTinTaiKhoanUserModal">
+                            <i class="glyphicon glyphicon-edit"></i>Cập nhật
+                        </button>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</fieldset>
+
+
+<!--MODAL Cập nhật thông tin cá nhân-->
+<!-- Modal -->
+<div class="modal fade" id="editThongTinCaNhanUserModal" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #0b3147; color: white">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title"><label>Cập nhật thông tin cá nhân</label></h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-horizontal">
+                    <div class="form-group">
+                        <label class="control-label col-sm-3">Họ tên:</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" value="Hoàng Thị Kim Phụng">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-3">Giới tính:</label>
+                        <div class="col-sm-9">
+                            <p style="padding-top: 7px;">Nữ</p>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-3">Ngày sinh:</label>
+                        <div class="col-sm-9">
+                            <input type="date" class="form-control" value="1994-09-07">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-3">Nơi sinh:</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" value="Đăk Lăk">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-3">Số điện thoại:</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" value="01668174561">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-3">CMND:</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" value="243186440">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-3">Email:</label>
+                        <div class="col-sm-9">
+                            <input type="email" class="form-control" value="hoangkimphung070994@gmail.com">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-3">Địa chỉ:</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" value="1 Võ Văn Ngân, Phường Linh Chiểu, Quận Thủ Đức">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-3">Avartar:</label>
+                        <div class="col-sm-9">
+                            <input type="file" class="form-control" accept="image/png, image/jpeg, image/jpg" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" style="background-color: #0b3147; color: white">Cập nhật</button>
+                <button type="button" class="btn btn-default" style="background-color: #0b3147; color: white" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!--MODAL Cập nhật thông tin tài khoản-->
+<!-- Modal -->
+<div class="modal fade" id="editThongTinTaiKhoanUserModal" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #0b3147; color: white">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title"><label>Cập nhật thông tin tài khoản</label></h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-horizontal">
+                    <div class="form-group">
+                        <label class="control-label col-sm-4">Tên tài khoản:</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" value="ND001">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-4">Mật khẩu:</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" value="HoangPhung">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-4">Xác thực đăng nhập:</label>
+                        <div style="padding-top: 7px;" class="col-sm-8">
+                            <select>
+                                <option>Gmail</option>
+                                <option>SMS</option>
+                                <option>QR</option>
+                                <option>Không</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" style="background-color: #0b3147; color: white">Cập nhật</button>
+                <button type="button" class="btn btn-default" style="background-color: #0b3147; color: white" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+
+
