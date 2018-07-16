@@ -4,8 +4,6 @@
     ViewBag.Title = "Login";
 }
 
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -18,15 +16,24 @@
 
     <script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
 
+    <script src="~/Scripts/jquery-3.3.1.min.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="~/Content/bootstrap.min.css">
+
+
+    <link rel="stylesheet" href="~/Content/jquery.gritter.css">
+    <script src="~/Scripts/jquery.gritter.js"></script>
+    <script src="~/Scripts/jquery.gritter.min.js"></script>
 
     <link rel="stylesheet" href="~/Content/login.css">
 </head>
 <body>
+
     <div class="cont">
         <div class="demo">
             <div class="login">
                 <div class="login__check">
-                    <img src="./Picture/logo.png" width="60%" height="60%" />
+                    <img src="Picture/logo.png" width="60%" height="60%" />
                 </div>
                 <div style="text-align: center;">
                     <label class="name_login">Đăng nhập</label>
@@ -36,19 +43,129 @@
                         <svg class="login__icon name svg-icon" viewBox="0 0 20 20">
                             <path d="M0,20 a10,8 0 0,1 20,0z M10,0 a4,4 0 0,1 0,8 a4,4 0 0,1 0,-8" />
                         </svg>
-                        <input type="text" class="login__input name" placeholder="Tên đăng nhập" />
+                        <input type="text" id="ten_tai_khoan" class="login__input name" placeholder="Tên đăng nhập" required />
                     </div>
                     <div class="login__row">
                         <svg class="login__icon pass svg-icon" viewBox="0 0 20 20">
                             <path d="M0,20 20,20 20,8 0,8z M10,13 10,16z M4,8 a6,8 0 0,1 12,0" />
                         </svg>
-                        <input type="password" class="login__input pass" placeholder="Mật khẩu" />
+                        <input type="password" id="mat_khau" class="login__input pass" placeholder="Mật khẩu" required />
                     </div>
-                    <button type="button" class="login__submit">Sign in</button>
+                    <button type="button" id="login_btn" class="login__submit">Sign in</button>
                 </div>
             </div>
         </div>
     </div>
+
+    <!--Modal xác thực-->
+    <div class="modal fade" id="authenticationLogin" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content" style="font-size:15px;">
+                <div class="modal-header" style="background-color: #0b3147; color: white">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title"><label>Xác thực đăng nhập</label></h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-horizontal">
+                        <div class="form-group">
+                            <label class="control-label col-sm-4">Mã code:</label>
+                            <div class="col-sm-8">
+                                <input id="ma_code" type="text" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button id="SendAuthentication" type="button" class="btn btn-default" style="background-color: #0b3147; color: white">Gửi</button>
+                    <button type="button" class="btn btn-default" style="background-color: #0b3147; color: white" data-dismiss="modal">Đóng</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        var authenticationType, id_account;
+        $("#login_btn").click(function () {
+            //Check login
+            $.post('http://localhost:6060/api/login/CheckLogin', {
+                ten_tai_khoan: $("#ten_tai_khoan").val(),
+                mat_khau: $("#mat_khau").val()
+            }, function (data) {
+                if (data != null) {
+                    authenticationType = data.id_loai_xac_thuc;
+                    id_account = data.id;
+                    if (data.id_loai_xac_thuc != 4) {
+                        $.post('http://localhost:6060/api/login/AuthenticationLogin', {
+                            id_loai_xac_thuc: data.id_loai_xac_thuc,
+                            id: data.id
+                        }, function (result) {
+                            $("#authenticationLogin").modal();
+
+                            if (data.id_loai_xac_thuc == 1) {
+                                $.gritter.add({
+                                    text: "Kiểm tra tin nhắn của bạn nhé!",
+                                    class_name: 'gritter-success'
+                                });
+                            }
+                            if (data.id_loai_xac_thuc == 2) {
+                                $.gritter.add({
+                                    text: "Kiểm tra gmail của bạn nhé!",
+                                    class_name: 'gritter-success'
+                                });
+                            }
+                        });
+                    }
+                    else {
+                        RedicrectPage(id_account);
+                    }
+                }
+                else {
+                    $.gritter.add({
+                        text: "Tài khoản đăng nhập không đúng",
+                        class_name: 'gritter-error'
+                    });
+                }
+            });
+        });
+
+        $("#SendAuthentication").click(function () {
+            var maCode = $("#ma_code").val();
+
+            $.post('http://localhost:6060/api/login/CheckAuthenticationLogin', {
+                id: id_account,
+                id_loai_xac_thuc: authenticationType,
+                ma_code_xac_thuc: maCode
+            }, function (result) {
+                alert(result);
+                if (result) {
+                    RedicrectPage(id_account);
+                }
+                else {
+                    $.gritter.add({
+                        text: "Mã xác thực không đúng!",
+                        class_name: 'gritter-error'
+                    });
+                }
+            });
+
+        });
+
+        function RedicrectPage(id_account) {
+            //Save name user
+            $.post('Login/SaveLogin', {
+                id_account: id_account
+            }, function (result) {
+                $("#authenticationLogin").modal('hide');
+
+                if (result.ma_role == 'admin')
+                    window.location.assign("PageAdmin");
+                if (result.ma_role == 'employee')
+                    window.location.assign("PageUser");
+            });
+        }
+    </script>
+
 
 
 </body>
