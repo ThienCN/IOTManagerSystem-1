@@ -11,5 +11,6 @@ namespace IOTManagerSystem.Model.ACCOUNT
     public interface IACCOUNTRepository: IRepository<ACCOUNTModel>
     {
         ACCOUNTModel CheckLogin(ACCOUNTModel account);
+        void UpdateThoiGianLoginGmail(int id, string dateTime);
     }
 }

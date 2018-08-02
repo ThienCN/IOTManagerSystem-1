@@ -240,6 +240,10 @@
     <Content Include="Scripts\jquery-3.3.1.min.map" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\IOTManagerSystem.API\IOTManagerSystem.API.csproj">
+      <Project>{6ddfa5b0-b1db-466d-ba72-0d1bc650bc9c}</Project>
+      <Name>IOTManagerSystem.API</Name>
+    </ProjectReference>
     <ProjectReference Include="..\IOTManagerSystem.Model\IOTManagerSystem.Model.csproj">
       <Project>{576E900C-993D-4EC0-B949-AF6E2FADACB7}</Project>
       <Name>IOTManagerSystem.Model</Name>
@@ -248,6 +252,9 @@
       <Project>{19DC61F2-4300-4AB3-8748-3EFC8C3AA2B4}</Project>
       <Name>IOTManagerSystem.Repository</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

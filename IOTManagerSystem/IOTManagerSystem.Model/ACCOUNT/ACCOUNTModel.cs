@@ -15,5 +15,6 @@ namespace IOTManagerSystem.Model.ACCOUNT
         public int tinh_trang { get; set; }
         public int id_ma_nguoi_dung { get; set; }
         public string ma_code_xac_thuc { get; set; }
+        public string thoi_gian_login_gmail { get; set; }
     }
 }

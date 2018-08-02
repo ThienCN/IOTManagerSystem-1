@@ -95,26 +95,43 @@
                 if (data != null) {
                     authenticationType = data.id_loai_xac_thuc;
                     id_account = data.id;
-                    if (data.id_loai_xac_thuc != 4) {
-                        $.post('http://localhost:6060/api/login/AuthenticationLogin', {
-                            id_loai_xac_thuc: data.id_loai_xac_thuc,
-                            id: data.id
-                        }, function (result) {
-                            $("#authenticationLogin").modal();
-
-                            if (data.id_loai_xac_thuc == 1) {
-                                $.gritter.add({
-                                    text: "Kiểm tra tin nhắn của bạn nhé!",
-                                    class_name: 'gritter-success'
-                                });
-                            }
-                            if (data.id_loai_xac_thuc == 2) {
-                                $.gritter.add({
-                                    text: "Kiểm tra gmail của bạn nhé!",
-                                    class_name: 'gritter-success'
-                                });
-                            }
-                        });
+                    if (authenticationType != 4) {
+                        if (authenticationType == 1) {
+                            $.post('http://localhost:6060/api/login/SendAuthenticationGmail', {
+                                id: id_account
+                            }, function (data) {
+                                if (data == true) {
+                                    $.gritter.add({
+                                        text: "Kiểm tra gmail của bạn!",
+                                        class_name: 'gritter-success'
+                                    });
+                                }
+                                else {
+                                    $.gritter.add({
+                                        text: "Xác thực không hợp lệ",
+                                        class_name: 'gritter-error'
+                                    });
+                                }
+                            });
+                        }
+                        else if (authenticationType == 2) {
+                            $.gritter.add({
+                                text: "Kiểm tra tin nhắn của bạn!",
+                                class_name: 'gritter-success'
+                            });
+                            $.post('http://localhost:6060/api/login/SendAuthenticationSMS', {
+                                id_loai_xac_thuc: authenticationType,
+                                id: id_account
+                            }, function (result) {
+                                if (result)
+                                    $("#authenticationLogin").modal();
+                                else
+                                    $.gritter.add({
+                                        text: "Xác thực không hợp lệ",
+                                        class_name: 'gritter-error'
+                                    });
+                            });
+                        }
                     }
                     else {
                         RedicrectPage(id_account);
@@ -132,12 +149,11 @@
         $("#SendAuthentication").click(function () {
             var maCode = $("#ma_code").val();
 
-            $.post('http://localhost:6060/api/login/CheckAuthenticationLogin', {
+            $.post('http://localhost:6060/api/login/CheckAuthenticationLoginSMS', {
                 id: id_account,
                 id_loai_xac_thuc: authenticationType,
                 ma_code_xac_thuc: maCode
             }, function (result) {
-                alert(result);
                 if (result) {
                     RedicrectPage(id_account);
                 }

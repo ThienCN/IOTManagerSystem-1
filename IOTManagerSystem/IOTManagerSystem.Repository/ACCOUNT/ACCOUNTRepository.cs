@@ -25,7 +25,18 @@ namespace IOTManagerSystem.Repository.ACCOUNT
 
         public ACCOUNTModel GetById(int id)
         {
-            throw new NotImplementedException();
+            DynamicParameters param = new DynamicParameters();
+            param.Add("id", id);
+            param.Add("ten_tai_khoan", null);
+            param.Add("mat_khau", null);
+            param.Add("id_loai_xac_thuc", null);
+            param.Add("tinh_trang", null);
+            param.Add("id_ma_nguoi_dung", null);
+            param.Add("thoi_gian_login_gmail", null);
+            param.Add("type", "getbyid");
+
+            return Query<ACCOUNTModel>("spACCOUNT", CommandType.StoredProcedure, param).First();
+
         }
 
         public bool Insert(ACCOUNTModel model)
@@ -46,13 +57,22 @@ namespace IOTManagerSystem.Repository.ACCOUNT
 
             IEnumerable<ACCOUNTModel> temp = Query<ACCOUNTModel>(@"SELECT DISTINCT id_loai_xac_thuc, id
                                                             FROM dbo.ACCOUNT
-                                                            WHERE ten_tai_khoan=@ten_tai_khoan AND mat_khau=@mat_khau",
+                                                            WHERE ten_tai_khoan=@ten_tai_khoan AND mat_khau=@mat_khau AND tinh_trang=1",
                                                                     CommandType.Text, param);
             if (temp.Count() > 0)
                 return temp.First();
             return null;
         }
 
-        
+        public void UpdateThoiGianLoginGmail(int id, string dateTime)
+        {
+            DynamicParameters param = new DynamicParameters();
+            param.Add("id", id);
+            param.Add("thoi_gian_login_gmail", dateTime);
+
+            Query<ACCOUNTModel>(@"UPDATE ACCOUNT
+                                    SET thoi_gian_login_gmail = @thoi_gian_login_gmail
+                                    WHERE id = @id", CommandType.Text, param);
+        }
     }
 }
