@@ -166,6 +166,11 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\font-awesome.min.css" />
     <Content Include="Content\header_menu.css" />
+    <Content Include="Content\img\gritter-error.png" />
+    <Content Include="Content\img\gritter-success.png" />
+    <Content Include="Content\img\gritter.png" />
+    <Content Include="Content\img\ie-spacer.gif" />
+    <Content Include="Content\jquery.gritter.css" />
     <Content Include="Content\login.css" />
     <Content Include="Content\w3.css" />
     <Content Include="favicon.ico" />
@@ -192,12 +197,16 @@
     <Content Include="Scripts\jquery-3.3.1.slim.js" />
     <Content Include="Scripts\jquery-3.3.1.slim.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery.gritter.js" />
+    <Content Include="Scripts\jquery.gritter.min.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
@@ -229,6 +238,23 @@
     <None Include="packages.config" />
     <Content Include="Scripts\jquery-3.3.1.slim.min.map" />
     <Content Include="Scripts\jquery-3.3.1.min.map" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\IOTManagerSystem.API\IOTManagerSystem.API.csproj">
+      <Project>{6ddfa5b0-b1db-466d-ba72-0d1bc650bc9c}</Project>
+      <Name>IOTManagerSystem.API</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\IOTManagerSystem.Model\IOTManagerSystem.Model.csproj">
+      <Project>{576E900C-993D-4EC0-B949-AF6E2FADACB7}</Project>
+      <Name>IOTManagerSystem.Model</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\IOTManagerSystem.Repository\IOTManagerSystem.Repository.csproj">
+      <Project>{19DC61F2-4300-4AB3-8748-3EFC8C3AA2B4}</Project>
+      <Name>IOTManagerSystem.Repository</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

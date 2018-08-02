@@ -11,13 +11,11 @@ namespace IOTManagerSystem.Repository.Core
     {
         private static string _connectionString = ConfigurationManager.ConnectionStrings["IOTMANAGERSYSTEM"].ConnectionString;
 
-
         public BaseRepository()
         { }
 
-
         //SELECT
-        public IEnumerable<T> Query<T>(string storedProcedureName, dynamic param = null)
+        public IEnumerable<T> Query<T>(string strSQL, CommandType command, dynamic param = null)
         {
 
             using (IDbConnection connection = new SqlConnection(_connectionString))
@@ -25,7 +23,7 @@ namespace IOTManagerSystem.Repository.Core
                 try
                 {
                     connection.Open();
-                    return SqlMapper.Query<T>(connection, storedProcedureName, param: param, commandType: CommandType.StoredProcedure);
+                    return SqlMapper.Query<T>(connection, strSQL, param: param, commandType: command);
                 }
                 catch (Exception e)
                 {
@@ -41,7 +39,7 @@ namespace IOTManagerSystem.Repository.Core
         }
 
         //INTSERT,UPDATE,DELETE
-        public bool Execute<T>(string storedProcedureName = null, DynamicParameters param = null, DynamicParameters outParam = null)
+        public bool Execute<T>(string strSQL, CommandType command, DynamicParameters param = null, DynamicParameters outParam = null)
         {
             CombineParameters(ref param, outParam);
 
@@ -50,9 +48,9 @@ namespace IOTManagerSystem.Repository.Core
                 try
                 {
                     connection.Open();
-                    int kq = connection.Execute(storedProcedureName,
+                    int kq = connection.Execute(strSQL,
                                 param,
-                                commandType: CommandType.StoredProcedure
+                                commandType: command
                             );
                     return kq > 0;
                 }
@@ -68,6 +66,7 @@ namespace IOTManagerSystem.Repository.Core
             }
         }
 
+        //FUNCTION
         public dynamic ResultFunction(string stringFunction)
         {
             using (IDbConnection connection = new SqlConnection(_connectionString))

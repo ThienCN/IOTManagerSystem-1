@@ -9,10 +9,10 @@ namespace IOTManagerSystem.Model.Core.Interfaces
     public interface IRepository<T>
     {
         IEnumerable<T> GetAll();
-        T GetById(string id);
+        T GetById(int id);
         bool Insert(T model);
         bool Update(T model);
-        bool Delete(string id);
+        bool Delete(int id);
 
     }
 }
