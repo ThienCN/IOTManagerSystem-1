@@ -11,5 +11,7 @@ namespace IOTManagerSystem.Model.USER
     public interface IUSERRepository:IRepository<USERModel>
     {
         USERModel GetUSERByIdAccount(ACCOUNTModel account);
+
+        USERModel GetByMaUser(string ma_nguoi_dung);
     }
 }

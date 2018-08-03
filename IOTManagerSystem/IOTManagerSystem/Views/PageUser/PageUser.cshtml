@@ -46,13 +46,6 @@
     }
 </style>
 
-<script type="text/javascript">
-    $(document).ready(function () {
-        $("#trang-cua-ban").addClass("active");
-    })
-</script>
-
-
 <!--THÔNG TIN CÁ NHÂN-->
 <fieldset class="fieldset w3-card">
     <div style="background-color: #0b3147;">
@@ -61,45 +54,45 @@
     <div class="w3-row" style="padding: 10px;">
         <div class="w3-col w3-container s9 m7 l8">
             <div class="w3-row">
-                <div class="w3-col w3-container s5 m4 l3"><label>Mã:</label></div>
-                <div class="w3-col w3-container s7 m8 l9">ND001</div>
+                <div class="w3-col w3-container s5 m4 l3"><label>Mã NV:</label></div>
+                <div class="w3-col w3-container s7 m8 l9" id="ma_nguoi_dung"></div>
             </div>
             <div class="w3-row">
                 <div class="w3-col w3-container s5 m4 l3"><label>Họ tên:</label></div>
-                <div class="w3-col w3-container s7 m8 l9">Hoàng Thị Kim Phụng</div>
+                <div class="w3-col w3-container s7 m8 l9" id="ho_ten_nguoi_dung"></div>
             </div>
             <div class="w3-row">
                 <div class="w3-col w3-container s5 m4 l3"><label>Giới tính:</label></div>
-                <div class="w3-col w3-container s7 m8 l9">Nữ</div>
+                <div class="w3-col w3-container s7 m8 l9" id="gioi_tinh"></div>
             </div>
             <div class="w3-row">
                 <div class="w3-col w3-container s5 m4 l3"><label>Ngày sinh:</label></div>
-                <div class="w3-col w3-container s7 m8 l9">07/09/1994</div>
+                <div class="w3-col w3-container s7 m8 l9" id="ngay_sinh"></div>
             </div>
             <div class="w3-row">
                 <div class="w3-col w3-container s5 m4 l3"><label>Nơi sinh:</label></div>
-                <div class="w3-col w3-container s7 m8 l9">Đăk Lăk</div>
+                <div class="w3-col w3-container s7 m8 l9" id="noi_sinh"></div>
             </div>
             <div class="w3-row">
                 <div class="w3-col w3-container s5 m4 l3"><label>Số điện thoại:</label></div>
-                <div class="w3-col w3-container s7 m8 l9">01668174561</div>
+                <div class="w3-col w3-container s7 m8 l9" id="sdt"></div>
             </div>
             <div class="w3-row">
                 <div class="w3-col w3-container s5 m4 l3"><label>CMND:</label></div>
-                <div class="w3-col w3-container s7 m8 l9">541386440</div>
+                <div class="w3-col w3-container s7 m8 l9" id="cmnd"></div>
             </div>
             <div class="w3-row">
                 <div class="w3-col w3-container s5 m4 l3"><label>Email:</label></div>
-                <div class="w3-col w3-container s7 m8 l9">hoangkimphung070994@gmail.com</div>
+                <div class="w3-col w3-container s7 m8 l9" id="email"></div>
             </div>
             <div class="w3-row">
                 <div class="w3-col w3-container s5 m4 l3"><label>Địa chỉ:</label></div>
-                <div class="w3-col w3-container s7 m8 l9">1 Võ Văn Ngân, Phường Linh Chiểu, Quận Thủ Đức</div>
+                <div class="w3-col w3-container s7 m8 l9" id="dia_chi"></div>
             </div>
             <div class="w3-row">
                 <div class="w3-col w3-container" style="text-align: right;">
                     <p>
-                        <button class="w3-button w3-round-large" data-toggle="modal" data-target="#editThongTinCaNhanUserModal">
+                        <button class="w3-button w3-round-large" data-toggle="modal" data-target="#editThongTinCaNhanUserModal" onclick="LoadProfile()">
                             <i class="glyphicon glyphicon-edit"></i> Cập nhật
                         </button>
                     </p>
@@ -121,15 +114,15 @@
         <div class="w3-col w3-container s9 m7 l8">
             <div class="w3-row">
                 <div class="w3-col w3-container s8 m4 l4"><label>Tên tài khoản:</label></div>
-                <div class="w3-col w3-container s4 m8 l8">ND001</div>
+                <div class="w3-col w3-container s4 m8 l8" id="ten_tai_khoan"></div>
             </div>
             <div class="w3-row">
                 <div class="w3-col w3-container s8 m4 l4"><label>Mật khẩu:</label></div>
-                <div class="w3-col w3-container s4 m8 l8">HoangPhung</div>
+                <div class="w3-col w3-container s4 m8 l8" id="mat_khau"></div>
             </div>
             <div class="w3-row">
                 <div class="w3-col w3-container s8 m4 l4"><label>Xác thực đăng nhập:</label></div>
-                <div class="w3-col w3-container s4 m8 l8">SMS</div>
+                <div class="w3-col w3-container s4 m8 l8" id="ten_loai_xac_thuc"></div>
             </div>
             <div class="w3-row">
                 <div class="w3-col w3-container" style="text-align: right;">
@@ -160,49 +153,52 @@
                     <div class="form-group">
                         <label class="control-label col-sm-3">Họ tên:</label>
                         <div class="col-sm-9">
-                            <input type="text" class="form-control" value="Hoàng Thị Kim Phụng">
+                            <input type="text" id="ho_ten_nguoi_dung_update" class="form-control">
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="control-label col-sm-3">Giới tính:</label>
-                        <div class="col-sm-9">
-                            <p style="padding-top: 7px;">Nữ</p>
+                        <div class="col-sm-3">
+                            <select class="form-control" id="gioi_tinh_update">
+                                <option value="true">Nam</option>
+                                <option value="false">Nữ</option>
+                            </select>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="control-label col-sm-3">Ngày sinh:</label>
                         <div class="col-sm-9">
-                            <input type="date" class="form-control" value="1994-09-07">
+                            <input type="text" class="form-control date-picker" id="ngay_sinh_update">
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="control-label col-sm-3">Nơi sinh:</label>
                         <div class="col-sm-9">
-                            <input type="text" class="form-control" value="Đăk Lăk">
+                            <input type="text" class="form-control" id="noi_sinh_update">
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="control-label col-sm-3">Số điện thoại:</label>
                         <div class="col-sm-9">
-                            <input type="text" class="form-control" value="01668174561">
+                            <input type="text" class="form-control" id="sdt_update">
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="control-label col-sm-3">CMND:</label>
                         <div class="col-sm-9">
-                            <input type="text" class="form-control" value="243186440">
+                            <input type="text" class="form-control" id="cmnd_update">
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="control-label col-sm-3">Email:</label>
                         <div class="col-sm-9">
-                            <input type="email" class="form-control" value="hoangkimphung070994@gmail.com">
+                            <input type="email" class="form-control" id="email_update">
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="control-label col-sm-3">Địa chỉ:</label>
                         <div class="col-sm-9">
-                            <input type="text" class="form-control" value="1 Võ Văn Ngân, Phường Linh Chiểu, Quận Thủ Đức">
+                            <input type="text" class="form-control" id="dia_chi_update">
                         </div>
                     </div>
                     <div class="form-group">
@@ -215,7 +211,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" style="background-color: #0b3147; color: white">Cập nhật</button>
-                <button type="button" class="btn btn-default" style="background-color: #0b3147; color: white" data-dismiss="modal">Đóng</button>
+                <button type="button" class="btn btn-default" style="background-color: #0b3147; color: white" data-dismiss="modal">Close</button>
             </div>
         </div>
 
@@ -261,12 +257,155 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" style="background-color: #0b3147; color: white">Cập nhật</button>
-                <button type="button" class="btn btn-default" style="background-color: #0b3147; color: white" data-dismiss="modal">Đóng</button>
+                <button type="button" class="btn btn-default" style="background-color: #0b3147; color: white" data-dismiss="modal">Close</button>
             </div>
         </div>
 
     </div>
 </div>
+
+@*<div class="row-fluid">
+    @(Html.Kendo().Grid<IOTManagerSystem.Model.USER.USERModel>()
+            .Name("grid")
+            .Columns(columns =>
+            {
+                columns.Bound(p => p.id).Filterable(false);
+                columns.Bound(p => p.ma_nguoi_dung);
+                columns.Bound(p => p.ho_ten_nguoi_dung);
+            })
+            .ToolBar(s =>
+            {
+                    s.Custom().Text("Thêm")
+                        .HtmlAttributes(new { @class = "btn btn-success btn-small", @Href = "javascript:void(0)", @onclick = "add(this)" });
+                
+                    s.Custom().Text("Xóa")
+                            .HtmlAttributes(new { @class = "btn btn-danger btn-small", @Href = "javascript:void(0)", @onclick = "showConfirmPopup()" });
+                
+            })
+            .Editable(editable => editable.Mode(GridEditMode.InCell))
+            .Pageable()
+            .Sortable()
+            .Scrollable()
+            .Filterable()
+            .HtmlAttributes(new { style = "height:550px;" })
+            .DataSource(dataSource => dataSource
+                .Ajax()
+                .PageSize(20)
+                .Model(model =>
+                {
+                    model.Id(p => p.id);
+                })
+                .Read(read => read.Action("Read", "PageUser"))
+             )
+    )
+</div>*@
+
+<script type="text/javascript">
+    var gioi_tinh = true;
+    $(document).ready(function () {
+        $("#trang-cua-ban").addClass("active");
+        
+
+        @*Lấy thông tin người dùng*@
+        $.post('http://localhost:6060/api/user/Profile', { ma_nguoi_dung: $('input[name="ma_nguoi_dung"]').val() }, function (data) {
+            if (data == null) {
+                $.gritter.add({
+                    text: "Người dùng không có thông tin cá nhân",
+                    class_name: 'gritter-error'
+                });
+            }
+            else {
+                $("#ma_nguoi_dung").text(data.ma_nguoi_dung);
+                $("#ho_ten_nguoi_dung").text(data.ho_ten_nguoi_dung);
+                if (data.gioi_tinh == "true") {
+                    $("#gioi_tinh").text("Nam");
+                    gioi_tinh = data.gioi_tinh;
+                }
+                else {
+                    $("#gioi_tinh").text("Nữ");
+                    gioi_tinh = data.gioi_tinh;
+                }
+                $("#ngay_sinh").text(new Date(moment(data.ngay_sinh)).toLocaleDateString());
+                $("#noi_sinh").text(data.noi_sinh);
+                $("#sdt").text(data.sdt);
+                $("#cmnd").text(data.cmnd);
+                $("#email").text(data.email);
+                $("#dia_chi").text(data.dia_chi);
+            }
+        }).fail(function (req) {
+            $.gritter.add({
+                text: "Không lấy được thông tin người dùng",
+                class_name: 'gritter-error'
+            });
+            return;
+        });
+
+        $.post('http://localhost:6060/api/user/Account', { ma_nguoi_dung: $('input[name="ma_nguoi_dung"]').val() }, function (data) {
+            if (data == null) {
+                $.gritter.add({
+                    text: "Người dùng không có thông tin tài khoản",
+                    class_name: 'gritter-error'
+                });
+            }
+            else {
+                $("#ten_tai_khoan").text(data.ten_tai_khoan);
+                $("#mat_khau").text(data.mat_khau);
+                $("#ten_loai_xac_thuc").text(data.ten_loai_xac_thuc);
+            }
+        }).fail(function (req) {
+            $.gritter.add({
+                text: "Không lấy được thông tin tài khoản",
+                class_name: 'gritter-error'
+            });
+            return;
+        });
+    });
+
+    function LoadProfile() {
+        $("#ho_ten_nguoi_dung_update").val($("#ho_ten_nguoi_dung").text());
+        $("#gioi_tinh_update").val(gioi_tinh);
+        $("#ngay_sinh_update").val($("#ngay_sinh").text());
+        $("#noi_sinh_update").val($("#noi_sinh").text());
+        $("#sdt_update").val($("#sdt").text());
+        $("#cmnd_update").val($("#cmnd").text());
+        $("#email_update").val($("#email").text());
+        $("#dia_chi_update").val($("#dia_chi").text());
+        $(".date-picker").datetimepicker({ format: 'DD/MM/YYYY' });
+    }
+
+    function UpdateProfile() {
+        $.post('http://localhost:6060/api/user/Account', { ma_nguoi_dung: $('input[name="ma_nguoi_dung"]').val() }, function (data) {
+            if (data == null) {
+                $.gritter.add({
+                    text: "Người dùng không có thông tin tài khoản",
+                    class_name: 'gritter-error'
+                });
+            }
+            else {
+                $("#ten_tai_khoan").text(data.ten_tai_khoan);
+                $("#mat_khau").text(data.mat_khau);
+                $("#ten_loai_xac_thuc").text(data.ten_loai_xac_thuc);
+            }
+        })
+    }
+
+
+
+    ////resize grid
+    //function Databound() {
+    //    resizeGrid(235);
+    //}
+    //function resizeGrid(number) {
+    //    var h_search = $(".divSearch").height();
+    //    var h = parseInt($(window).height()) - h_search;
+    //    var content = $("#grid").find(".k-grid-content");
+    //    content.height(h - number);
+    //    $("[data-toggle='tooltip']").tooltip();
+    //    var contentlock = $("#grid").find(".k-grid-content-locked");
+    //    contentlock.height(h - number - 17);
+    //    contentlock.css("overflow", "visible");
+    //}
+</script>
 
 
 

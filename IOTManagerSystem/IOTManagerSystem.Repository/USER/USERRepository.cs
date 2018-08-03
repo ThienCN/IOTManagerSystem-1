@@ -20,22 +20,17 @@ namespace IOTManagerSystem.Repository.USER
 
         public IEnumerable<USERModel> GetAll()
         {
-            throw new NotImplementedException();
+            return Query<USERModel>("SELECT * FROM [USER]", CommandType.Text);
         }
 
         public USERModel GetById(int id)
         {
-            DynamicParameters param = new DynamicParameters();
-            param.Add("id", id);
+            //DynamicParameters param = new DynamicParameters();
+            //param.Add("id", id);
+            //param.Add("type", "getbyid");
 
-            IEnumerable<USERModel> temp = Query<USERModel>(@"SELECT [USER].id, ma_nguoi_dung, ho_ten_nguoi_dung, sdt, cmnd,
-		                                                            email, dia_chi, avartar, ngay_sinh, noi_sinh, id_role, ten_role
-                                                            FROM dbo.[USER],dbo.ROLE
-                                                            WHERE [USER].id = @id AND ROLE.id = id_role", 
-                                                            CommandType.Text, param);
-            if (temp.Count() > 0)
-                return temp.First();
-            return null;
+            //return Query<USERModel>("spUSER", CommandType.StoredProcedure, param).First();
+            throw new NotImplementedException();
         }
 
         public bool Insert(USERModel model)
@@ -62,6 +57,15 @@ namespace IOTManagerSystem.Repository.USER
             if (temp.Count() > 0)
                 return temp.First();
             return null;
+        }
+
+        public USERModel GetByMaUser(string ma_nguoi_dung)
+        {
+            DynamicParameters param = new DynamicParameters();
+            param.Add("ma_nguoi_dung", ma_nguoi_dung);
+            param.Add("type", "getbymauser");
+
+            return Query<USERModel>("spUSER", CommandType.StoredProcedure, param).First();
         }
     }
 }

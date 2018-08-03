@@ -19,6 +19,15 @@ namespace IOTManagerSystem
                       "~/Content/bootstrap.min.css",
                       "~/Content/font-awesome.min.css",
                       "~/Content/Site.css"));
+
+            bundles.Add(new StyleBundle("~/Content/kendo/css").Include(
+                        "~/Content/kendo/2018.2.620/kendo.common.min.css",
+                        "~/Content/kendo/2018.2.620/kendo.mobile.all.min.css",
+                        "~/Content/kendo/2018.2.620/kendo.material.min.css"));
+
+            bundles.Add(new ScriptBundle("~/bundles/kendo").Include(
+                        "~/Scripts/kendo/2018.2.620/kendo.all.min.js",
+                        "~/Scripts/kendo/2018.2.620/kendo.aspnetmvc.min.js"));
         }
     }
 }

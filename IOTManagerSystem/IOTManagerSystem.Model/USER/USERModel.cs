@@ -11,6 +11,7 @@ namespace IOTManagerSystem.Model.USER
         public int id { get; set; }
         public string ma_nguoi_dung { get; set; }
         public string ho_ten_nguoi_dung { get; set; }
+        public string gioi_tinh { get; set; }
         public string sdt { get; set; }
         public string cmnd { get; set; }
         public string email { get; set; }

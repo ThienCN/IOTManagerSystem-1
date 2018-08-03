@@ -14,14 +14,6 @@
 
     <link rel="stylesheet" href="~/Content/header_menu.css">
 
-    <script type="text/javascript">
-        $(document).ready(function () {
-            //Sự kiện khi click vào các sub-menu
-            $("li#submenu2").click(function () {
-                $("ul#sub-menu2").toggle();
-            });
-        })
-    </script>
 </head>
 <body>
     <!-- HEADER -->
@@ -56,16 +48,9 @@
         <nav class="navbar-default nav-menu">
             <div id="nav-left" class="navbar-collapse collapse">
                 <ul class="nav">
-                    <li id="submenu1"><a href="#"><i class="fa fa-user-secret"></i> Trang của bạn</a></li>
-                    <li id="submenu2">
-                        <a href="#"><i class="fa fa-user-o"></i> Quản lý người dùng <i class="fa fa-sort-desc w3-display-right" style="padding-right:5px"></i></a>
-                        <ul class="sub-menu none-style" id="sub-menu2">
-                            <li><a href="#"><i class="glyphicon glyphicon-chevron-right"></i> Thêm người dùng mới</a></li>
-                            <li><a href="#"><i class="glyphicon glyphicon-chevron-right"></i> Chỉnh sửa thông tin người dùng</a></li>
-                            <li><a href="#"><i class="glyphicon glyphicon-chevron-right"></i> Thống kê danh sách người dùng</a></li>
-                        </ul>
-                    </li>
-                    <li id="submenu3"><a href="@Url.Action("Logout", "Login")"><i class="fa fa-sign-out"></i> Thoát </a></li>
+                    <li><a href="#"><i class="fa fa-user-secret"></i> Trang của bạn</a></li>
+                    <li><a href="#"><i class="fa fa-address-book"></i> Quản lý người dùng</a></li>
+                    <li><a href="@Url.Action("Logout", "Login")"><i class="fa fa-sign-out"></i> Thoát </a></li>
                 </ul>
             </div>
         </nav>
