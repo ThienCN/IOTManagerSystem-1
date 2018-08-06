@@ -74,5 +74,21 @@ namespace IOTManagerSystem.Repository.ACCOUNT
                                     SET thoi_gian_login_gmail = @thoi_gian_login_gmail
                                     WHERE id = @id", CommandType.Text, param);
         }
+
+        public ACCOUNTModel GetByMaUser(string ma_nguoi_dung)
+        {
+            DynamicParameters param = new DynamicParameters();
+            param.Add("id", 0);
+            param.Add("ten_tai_khoan", null);
+            param.Add("mat_khau", null);
+            param.Add("id_loai_xac_thuc", null);
+            param.Add("tinh_trang", null);
+            param.Add("id_ma_nguoi_dung", null);
+            param.Add("thoi_gian_login_gmail", null);
+            param.Add("type", "getbymauser");
+            param.Add("ma_nguoi_dung", ma_nguoi_dung);
+
+            return Query<ACCOUNTModel>("spACCOUNT", CommandType.StoredProcedure, param).First();
+        }
     }
 }

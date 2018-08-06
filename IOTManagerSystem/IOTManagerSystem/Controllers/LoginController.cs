@@ -86,9 +86,9 @@ namespace IOTManagerSystem.Controllers
             bool rememberMe = false;
             var authTicket = new FormsAuthenticationTicket(
                             1,                             // version
-                            user.ho_ten_nguoi_dung,        // user name
+                            $"{user.ma_nguoi_dung}_{user.ho_ten_nguoi_dung}",// user name
                             DateTime.Now,                  // created
-                            DateTime.Now.AddMinutes(20),   // expires
+                            DateTime.Now.AddMinutes(480),   // expires
                             rememberMe,                    // persistent?
                             user.ma_role,                  // can be used to store roles
                             "/"

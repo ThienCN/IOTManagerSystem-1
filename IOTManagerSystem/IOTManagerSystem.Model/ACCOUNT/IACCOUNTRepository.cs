@@ -12,5 +12,7 @@ namespace IOTManagerSystem.Model.ACCOUNT
     {
         ACCOUNTModel CheckLogin(ACCOUNTModel account);
         void UpdateThoiGianLoginGmail(int id, string dateTime);
+
+        ACCOUNTModel GetByMaUser(string ma_nguoi_dung);
     }
 }

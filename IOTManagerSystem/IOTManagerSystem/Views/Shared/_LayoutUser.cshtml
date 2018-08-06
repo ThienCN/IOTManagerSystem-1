@@ -8,11 +8,18 @@
     <link rel="stylesheet" href="~/Content/bootstrap.min.css">
     <link rel="stylesheet" href="~/Content/w3.css">
     <link rel="stylesheet" href="~/Content/font-awesome.min.css">
+    <link rel="stylesheet" href="~/Content/bootstrap-datetimepicker.min.css">
 
     <script type="text/javascript" src="~/Scripts/jquery-3.3.1.min.js"></script>
     <script type="text/javascript" src="~/Scripts/bootstrap.min.js"></script>
+    <script type="text/javascript" src="~/Scripts/moment-with-locales.js"></script>
+    <script type="text/javascript" src="~/Scripts/bootstrap-datetimepicker.js"></script>
+    <script type="text/javascript" src="~/Scripts/bootstrap-datetimepicker.min.js"></script>
 
     <link rel="stylesheet" href="~/Content/header_menu.css">
+    @Styles.Render("~/Content/kendo/css")
+    @Scripts.Render("~/bundles/kendo")
+
 </head>
 <body>
     <!-- HEADER MENU -->
@@ -39,6 +46,7 @@
                 <div class="nav navbar-nav navbar-right">
                     <a class="image-nhan-vien" style="text-decoration:none"><img src="~/Picture/doremon.png" alt="NhanVien"><span>@ViewBag.NameUser</span></a>
                 </div>
+                <input type="hidden" name="ma_nguoi_dung" value="@ViewBag.MaUser" />
             </div>
         </nav>
         <!-- MENU -->
