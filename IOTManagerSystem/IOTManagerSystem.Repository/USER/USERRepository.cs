@@ -65,7 +65,10 @@ namespace IOTManagerSystem.Repository.USER
             param.Add("ma_nguoi_dung", ma_nguoi_dung);
             param.Add("type", "getbymauser");
 
-            return Query<USERModel>("spUSER", CommandType.StoredProcedure, param).First();
+            IEnumerable<USERModel> list = Query<USERModel>("spUSER", CommandType.StoredProcedure, param);
+            if (list != null && list.Count() > 0)
+                return list.First();
+            return null;
         }
     }
 }

@@ -24,6 +24,8 @@
     <link rel="stylesheet" href="~/Content/jquery.gritter.css">
     <script src="~/Scripts/jquery.gritter.js"></script>
     <script src="~/Scripts/jquery.gritter.min.js"></script>
+    <script src="~/Scripts/jquery.blockui.min.js"></script>
+    <script src="~/Scripts/jquery.blockUI.js"></script>
 
     <link rel="stylesheet" href="~/Content/login.css">
 </head>
@@ -49,7 +51,7 @@
                         <svg class="login__icon pass svg-icon" viewBox="0 0 20 20">
                             <path d="M0,20 20,20 20,8 0,8z M10,13 10,16z M4,8 a6,8 0 0,1 12,0" />
                         </svg>
-                        <input type="password" id="mat_khau" class="login__input pass" placeholder="Mật khẩu" required />
+                        <input type="password" id="mat_khau" class="login__input pass" onkeypress="if(event.keyCode === 13){Login()}"  placeholder="Mật khẩu" required />
                     </div>
                     <button type="button" id="login_btn" class="login__submit">Sign in</button>
                 </div>
@@ -57,8 +59,8 @@
         </div>
     </div>
 
-    <!--Modal xác thực-->
-    <div class="modal fade" id="authenticationLogin" role="dialog">
+    <!--Modal xác thực SMS-->
+    <div class="modal fade" id="authenticationLoginSMS" role="dialog">
         <div class="modal-dialog">
             <!-- Modal content-->
             <div class="modal-content" style="font-size:15px;">
@@ -71,25 +73,52 @@
                         <div class="form-group">
                             <label class="control-label col-sm-4">Mã code:</label>
                             <div class="col-sm-8">
-                                <input id="ma_code" type="text" class="form-control">
+                                <input id="ma_code" type="text" class="form-control" onkeypress="if (event.keyCode === 13) {SendAuthenticationSMS()}">
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button id="SendAuthentication" type="button" class="btn btn-default" style="background-color: #0b3147; color: white">Gửi</button>
+                    <button id="SendAuthenticationSMS" type="button" class="btn btn-default" style="background-color: #0b3147; color: white">Gửi</button>
                     <button type="button" class="btn btn-default" style="background-color: #0b3147; color: white" data-dismiss="modal">Đóng</button>
                 </div>
             </div>
         </div>
     </div>
-    <div>
-        @(Html.Kendo().DatePicker().Name("datepicker"))
+
+    <!--Modal xác thực GG-->
+    <div class="modal fade" id="authenticationLoginGG" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content" style="font-size:15px;">
+                <div class="modal-header" style="background-color: #0b3147; color: white">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title"><label>Xác thực đăng nhập</label></h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-horizontal">
+                        <div class="form-group">
+                            <img id="BarcodeImageUrl" />
+                        </div>
+                        <div class="form-group">
+                            <label style="margin-left: 5%">Nhập mã code: </label>
+                            <input type="text" id="CodeDigitGG" onkeypress="if (event.keyCode === 13) {SendAuthenticationGG()}"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button id="SendAuthenticationGG" type="button" class="btn btn-default" style="background-color: #0b3147; color: white">Gửi</button>
+                    <button type="button" class="btn btn-default" style="background-color: #0b3147; color: white" data-dismiss="modal">Đóng</button>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script>
         var authenticationType, id_account;
-        $("#login_btn").click(function () {
+
+        function Login() {
+            blockUI(true);
             //Check login
             $.post('http://localhost:6060/api/login/CheckLogin', {
                 ten_tai_khoan: $("#ten_tai_khoan").val(),
@@ -103,6 +132,7 @@
                             $.post('http://localhost:6060/api/login/SendAuthenticationGmail', {
                                 id: id_account
                             }, function (data) {
+                                blockUI(false);
                                 if (data == true) {
                                     $.gritter.add({
                                         text: "Kiểm tra gmail của bạn!",
@@ -123,11 +153,28 @@
                                 class_name: 'gritter-success'
                             });
                             $.post('http://localhost:6060/api/login/SendAuthenticationSMS', {
-                                id_loai_xac_thuc: authenticationType,
                                 id: id_account
                             }, function (result) {
+                                blockUI(false);
                                 if (result)
-                                    $("#authenticationLogin").modal();
+                                    $("#authenticationLoginSMS").modal();
+                                else
+                                    $.gritter.add({
+                                        text: "Xác thực không hợp lệ",
+                                        class_name: 'gritter-error'
+                                    });
+                            });
+                        }
+                        else if (authenticationType == 3) {
+                            $.post('http://localhost:6060/api/login/SendAuthenticationGG', {
+                                id: id_account
+                            }, function (result) {
+                                blockUI(false);
+                                if (result != null) {
+                                    $("#authenticationLoginGG").modal();
+                                    $("#BarcodeImageUrl").attr("src", result);
+                                    $("#CodeDigitGG").css("border", "groove");
+                                }
                                 else
                                     $.gritter.add({
                                         text: "Xác thực không hợp lệ",
@@ -147,16 +194,19 @@
                     });
                 }
             });
+        }
+        $("#login_btn").click(function () {
+            Login();
         });
 
-        $("#SendAuthentication").click(function () {
+        function SendAuthenticationSMS() {
             var maCode = $("#ma_code").val();
-
+            blockUI(true);
             $.post('http://localhost:6060/api/login/CheckAuthenticationLoginSMS', {
                 id: id_account,
-                id_loai_xac_thuc: authenticationType,
                 ma_code_xac_thuc: maCode
             }, function (result) {
+                blockUI(false);
                 if (result) {
                     RedicrectPage(id_account);
                 }
@@ -167,7 +217,32 @@
                     });
                 }
             });
+        }
+        $("#SendAuthenticationSMS").click(function () {
+            SendAuthenticationSMS();
+        });
 
+        function SendAuthenticationGG() {
+            var maCode = $("#CodeDigitGG").val();
+            blockUI(true);
+            $.post('http://localhost:6060/api/login/CheckAuthenticationLoginGG', {
+                id: id_account,
+                ma_code_xac_thuc: maCode
+            }, function (result) {
+                blockUI(false);
+                if (result) {
+                    RedicrectPage(id_account);
+                }
+                else {
+                    $.gritter.add({
+                        text: "Mã xác thực không đúng!",
+                        class_name: 'gritter-error'
+                    });
+                }
+            });
+        }
+        $("#SendAuthenticationGG").click(function () {
+            SendAuthenticationGG();
         });
 
         function RedicrectPage(id_account) {
@@ -175,18 +250,24 @@
             $.post('Login/SaveLogin', {
                 id_account: id_account
             }, function (result) {
-                $("#authenticationLogin").modal('hide');
-
+                blockUI(false);
+                $("#authenticationLoginSMS").modal('hide');
                 if (result.ma_role == 'admin')
                     window.location.assign("PageAdmin");
                 if (result.ma_role == 'employee')
                     window.location.assign("PageUser");
             });
         }
+
+        function blockUI(isMark) {
+            if (isMark) {
+                $(document).ajaxStart($.blockUI({ message: '<i class="fa fa-spinner fa-3x fa-lg fa-spin txt-color-blueDark"></i>', theme: false })).ajaxStop($.unblockUI);
+            }
+            else {
+                $(document).ajaxStart($.blockUI({ message: '<i class="fa fa-spinner fa-3x fa-lg fa-spin txt-color-blueDark"></i>', theme: false, overlayCSS: { backgroundColor: 'transparent' } })).ajaxStop($.unblockUI);
+            }
+        }
     </script>
-
-
-
 </body>
 </html>
 

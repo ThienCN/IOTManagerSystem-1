@@ -17,7 +17,7 @@ namespace IOTManagerSystem.Model.USER
         public string email { get; set; }
         public string dia_chi { get; set; }
         public string avartar { get; set; }
-        public DateTime ngay_sinh { get; set; }
+        public string ngay_sinh { get; set; }
         public string noi_sinh { get; set; }
 
         public int id_role { get; set; }

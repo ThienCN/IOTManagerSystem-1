@@ -11,6 +11,7 @@ using IOTManagerSystem.Repository.USER;
 using IOTManagerSystem.Repository;
 using System.Net.Mail;
 using System.Web.Security;
+using Google.Authenticator;
 
 namespace IOTManagerSystem.API.Controllers
 {
@@ -57,7 +58,8 @@ namespace IOTManagerSystem.API.Controllers
                 mail.From = new MailAddress("hoangthikimphung0709@gmail.com");
 
                 //To address to send email
-                mail.To.Add("15110283@student.hcmute.edu.vn");
+                USERModel user = new USERRepository().GetUSERByIdAccount(account);
+                mail.To.Add(user.email);
                 string thoi_gian_login_gmail = DateTime.Now.ToString("ddMMyyyyHHmmss");
                 var hash = $"{account.id}_{thoi_gian_login_gmail}";
                 hash = System.Web.HttpUtility.UrlEncode(EncryptTo.Encrypt(hash));
@@ -83,5 +85,28 @@ namespace IOTManagerSystem.API.Controllers
             }
         }
 
+        [Route("SendAuthenticationGG")]
+        [HttpPost]
+        public string SendAuthenticationGG([FromBody] ACCOUNTModel account)
+        {
+            USERModel user = new USERRepository().GetUSERByIdAccount(account);
+            //Two Factor Authentication Setup
+            TwoFactorAuthenticator TwoFacAuth = new TwoFactorAuthenticator();
+            string UserUniqueKey = (user.ma_nguoi_dung + user.ho_ten_nguoi_dung);
+
+            var setupInfo = TwoFacAuth.GenerateSetupCode("IOT Manager System", user.ma_nguoi_dung, UserUniqueKey, 200, 200);
+            return setupInfo.QrCodeSetupImageUrl;
+        }
+
+        [Route("CheckAuthenticationLoginGG")]
+        [HttpPost]
+        public bool CheckAuthenticationLoginGG([FromBody] ACCOUNTModel account)
+        {
+            USERModel user = new USERRepository().GetUSERByIdAccount(account);
+            TwoFactorAuthenticator TwoFacAuth = new TwoFactorAuthenticator();
+            string UserUniqueKey = (user.ma_nguoi_dung + user.ho_ten_nguoi_dung);
+            bool isValid = TwoFacAuth.ValidateTwoFactorPIN(UserUniqueKey, account.ma_code_xac_thuc);
+            return isValid;
+        }
     }
 }

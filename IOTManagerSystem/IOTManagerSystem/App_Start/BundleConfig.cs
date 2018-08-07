@@ -21,6 +21,9 @@ namespace IOTManagerSystem
                       "~/Content/Site.css"));
 
             bundles.Add(new StyleBundle("~/Content/kendo/css").Include(
+                        "~/Content/kendo/2018.2.620/kendo.default.mobile.min.css",
+                        "~/Content/kendo/2018.2.620/kendo.default.min.css",
+                        "~/Content/kendo/2018.2.620/kendo.rtl.min.css",
                         "~/Content/kendo/2018.2.620/kendo.common.min.css",
                         "~/Content/kendo/2018.2.620/kendo.mobile.all.min.css",
                         "~/Content/kendo/2018.2.620/kendo.material.min.css"));
