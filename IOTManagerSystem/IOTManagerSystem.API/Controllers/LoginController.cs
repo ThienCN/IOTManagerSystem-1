@@ -4,9 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
-using IOTManagerSystem.Model.ACCOUNT;
 using IOTManagerSystem.Model.USER;
-using IOTManagerSystem.Repository.ACCOUNT;
 using IOTManagerSystem.Repository.USER;
 using IOTManagerSystem.Repository;
 using System.Net.Mail;
@@ -20,35 +18,34 @@ namespace IOTManagerSystem.API.Controllers
     {
         [Route("CheckLogin")]
         [HttpPost]
-        public ACCOUNTModel CheckLogin([FromBody] ACCOUNTModel account)
+        public USERModel CheckLogin([FromBody] USERModel user)
         {
-            ACCOUNTModel result = new ACCOUNTRepository().CheckLogin(account);
-
+            USERModel result = new USERRepository().CheckLogin(user);
             return result;
         }
 
         [Route("SendAuthenticationSMS")]
         [HttpPost]
-        public bool SendAuthenticationSMS([FromBody] ACCOUNTModel account)
+        public bool SendAuthenticationSMS([FromBody] USERModel user)
         {
-            USERModel user = new USERRepository().GetUSERByIdAccount(account);
+            USERModel temp = new USERRepository().GetByEmail(user.email);
 
             //Xác thực bằng số điện thoại
-            return AUTHENTICATIONRepository.SendVerifySMS(user.sdt, "84");
+            return AUTHENTICATIONRepository.SendVerifySMS(temp.sdt, "84");
         }
 
         [Route("CheckAuthenticationLoginSMS")]
         [HttpPost] 
-        public bool CheckAuthenticationLoginSMS([FromBody] ACCOUNTModel account)
+        public bool CheckAuthenticationLoginSMS([FromBody] USERModel user)
         {
-            USERModel user = new USERRepository().GetUSERByIdAccount(account);
+            USERModel temp = new USERRepository().GetByEmail(user.email);
             //Xác thực bằng số điện thoại
-            return AUTHENTICATIONRepository.VerifySMSCode(user.sdt, "84", account.ma_code_xac_thuc); ;
+            return AUTHENTICATIONRepository.VerifySMSCode(temp.sdt, "84", user.ma_code_xac_thuc); ;
         }
 
         [Route("SendAuthenticationGmail")]
         [HttpPost]
-        public bool SendAuthenticationGmail([FromBody] ACCOUNTModel account)
+        public bool SendAuthenticationGmail([FromBody] USERModel user)
         { 
             try
             {
@@ -58,10 +55,9 @@ namespace IOTManagerSystem.API.Controllers
                 mail.From = new MailAddress("hoangthikimphung0709@gmail.com");
 
                 //To address to send email
-                USERModel user = new USERRepository().GetUSERByIdAccount(account);
                 mail.To.Add(user.email);
                 string thoi_gian_login_gmail = DateTime.Now.ToString("ddMMyyyyHHmmss");
-                var hash = $"{account.id}_{thoi_gian_login_gmail}";
+                var hash = $"{user.email}_{thoi_gian_login_gmail}";
                 hash = System.Web.HttpUtility.UrlEncode(EncryptTo.Encrypt(hash));
                 string href = "http://localhost:50542/Login/CheckAuthenticationGmail?check=" + hash;
                 mail.Body = "<b>Vui lòng truy cập vào địa chỉ để xác thực đăng nhập:</b>  <a href='" + href + "' >" + hash + "</a>";
@@ -75,7 +71,7 @@ namespace IOTManagerSystem.API.Controllers
                 smtpC.Send(mail);
 
                 //Lưu vào DB
-                new ACCOUNTRepository().UpdateThoiGianLoginGmail(account.id, thoi_gian_login_gmail);
+                new USERRepository().UpdateThoiGianLoginGmail(user.email, thoi_gian_login_gmail);
 
                 return true;
             }
@@ -87,25 +83,25 @@ namespace IOTManagerSystem.API.Controllers
 
         [Route("SendAuthenticationGG")]
         [HttpPost]
-        public string SendAuthenticationGG([FromBody] ACCOUNTModel account)
+        public string SendAuthenticationGG([FromBody] USERModel user)
         {
-            USERModel user = new USERRepository().GetUSERByIdAccount(account);
+            USERModel temp = new USERRepository().GetByEmail(user.email);
             //Two Factor Authentication Setup
             TwoFactorAuthenticator TwoFacAuth = new TwoFactorAuthenticator();
-            string UserUniqueKey = (user.ma_nguoi_dung + user.ho_ten_nguoi_dung);
+            string UserUniqueKey = (temp.ma_nguoi_dung + "HoangPhung");
 
-            var setupInfo = TwoFacAuth.GenerateSetupCode("IOT Manager System", user.ma_nguoi_dung, UserUniqueKey, 200, 200);
+            var setupInfo = TwoFacAuth.GenerateSetupCode("IOT Manager System", temp.ma_nguoi_dung, UserUniqueKey, 200, 200);
             return setupInfo.QrCodeSetupImageUrl;
         }
 
         [Route("CheckAuthenticationLoginGG")]
         [HttpPost]
-        public bool CheckAuthenticationLoginGG([FromBody] ACCOUNTModel account)
+        public bool CheckAuthenticationLoginGG([FromBody] USERModel user)
         {
-            USERModel user = new USERRepository().GetUSERByIdAccount(account);
+            USERModel temp = new USERRepository().GetByEmail(user.email);
             TwoFactorAuthenticator TwoFacAuth = new TwoFactorAuthenticator();
-            string UserUniqueKey = (user.ma_nguoi_dung + user.ho_ten_nguoi_dung);
-            bool isValid = TwoFacAuth.ValidateTwoFactorPIN(UserUniqueKey, account.ma_code_xac_thuc);
+            string UserUniqueKey = (temp.ma_nguoi_dung + "HoangPhung");
+            bool isValid = TwoFacAuth.ValidateTwoFactorPIN(UserUniqueKey, user.ma_code_xac_thuc);
             return isValid;
         }
     }

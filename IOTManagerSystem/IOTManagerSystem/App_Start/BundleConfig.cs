@@ -20,17 +20,17 @@ namespace IOTManagerSystem
                       "~/Content/font-awesome.min.css",
                       "~/Content/Site.css"));
 
-            bundles.Add(new StyleBundle("~/Content/kendo/css").Include(
-                        "~/Content/kendo/2018.2.620/kendo.default.mobile.min.css",
-                        "~/Content/kendo/2018.2.620/kendo.default.min.css",
-                        "~/Content/kendo/2018.2.620/kendo.rtl.min.css",
-                        "~/Content/kendo/2018.2.620/kendo.common.min.css",
-                        "~/Content/kendo/2018.2.620/kendo.mobile.all.min.css",
-                        "~/Content/kendo/2018.2.620/kendo.material.min.css"));
 
             bundles.Add(new ScriptBundle("~/bundles/kendo").Include(
-                        "~/Scripts/kendo/2018.2.620/kendo.all.min.js",
-                        "~/Scripts/kendo/2018.2.620/kendo.aspnetmvc.min.js"));
+                                 "~/Scripts/kendo/kendo.all.min.js",
+                                  "~/Scripts/kendo/kendo.timezones.min.js", // uncomment if using the Scheduler
+                                 "~/Scripts/kendo/kendo.aspnetmvc.min.js"));
+
+            bundles.Add(new StyleBundle("~/Content/kendo/css").Include(
+               "~/Content/kendo/kendo.common-bootstrap.min.css",
+               "~/Content/kendo/kendo.bootstrap.min.css"));
+
+            //bundles.IgnoreList.Clear();
         }
     }
 }
