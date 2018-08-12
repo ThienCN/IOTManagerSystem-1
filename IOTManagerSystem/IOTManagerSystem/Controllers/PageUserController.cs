@@ -9,41 +9,35 @@ using IOTManagerSystem.API;
 using IOTManagerSystem.Model.USER;
 using Kendo.Mvc.UI;
 using Kendo.Mvc.Extensions;
-using IOTManagerSystem.Repository.ACCOUNT;
-using IOTManagerSystem.Model.ACCOUNT;
 using System.Globalization;
+using IOTManagerSystem.Repository.ROLE;
 
 namespace IOTManagerSystem.Controllers
 {
-    [Authorize(Roles = "employee")]
+    [Authorize(Roles = "user")]
     public class PageUserController : CustomController
     {
         // GET: PageUser
         public ActionResult Index()
         {
-            var temp = FormsAuthentication.Decrypt(Request.Cookies[FormsAuthentication.FormsCookieName].Value).Name;
+            if (loginedUser == null)
+                return View("Login");
+
             ViewBag.MaUser = loginedUser.ma_nguoi_dung;
             ViewBag.NameUser = loginedUser.ho_ten_nguoi_dung;
-            USERModel user = new USERRepository().GetByMaUser(temp.Split('_')[0]);
-            DateTime dt = DateTime.ParseExact(user.ngay_sinh, "MM/dd/yyyy hh:mm:ss tt", CultureInfo.InvariantCulture);
-            user.ngay_sinh = dt.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture);
-            ViewBag.InfoUser = user;
-            ViewBag.InfoAccount = new ACCOUNTRepository().GetByMaUser(temp.Split('_')[0]);
+
+            ViewBag.InfoUser = new USERRepository().GetByMaUser(EncryptTo.Decrypt(loginedUser.ma_nguoi_dung));
             return View("PageUser");
         }
 
-        [HttpPost]
-        public ActionResult Read([DataSourceRequest]DataSourceRequest request)
-        {
-            IEnumerable<USERModel> list = new USERRepository().GetAll();
-            return Json(list.ToDataSourceResult(request));
-        }
+        
 
         [HttpPost]
         public ActionResult UpdateProfile(USERModel user)
         {
-            var i = 0;
-            return Json(new { success = true });
+            if (new USERRepository().Update(user))
+                return Json(new { success = true, user = user });
+            else return Json(new { success = false });
         }
     }
 }

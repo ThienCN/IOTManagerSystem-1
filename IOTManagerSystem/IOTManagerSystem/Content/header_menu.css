@@ -70,7 +70,7 @@ header .logo {
 .nav-menu {
     padding-top: 3px;
     background-color: white;
-    height: 100%;
+    height: 80%;
     overflow: auto;
     border-right: 2px solid #949494;
 }
@@ -138,7 +138,6 @@ ul.none-style {
 .phan-noi-dung {
     max-width: 1450px;
     padding: 10px;
-    min-height: 1050px;
 }
 
 
@@ -153,7 +152,6 @@ ul.none-style {
 
     .phan-noi-dung {
         margin: 0 0 0 240px;
-        min-height: 1050px;
     }
 }
 

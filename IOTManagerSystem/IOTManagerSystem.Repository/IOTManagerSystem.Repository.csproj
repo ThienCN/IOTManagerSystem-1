@@ -55,10 +55,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ACCOUNT\ACCOUNTRepository.cs" />
     <Compile Include="AUTHENTICATIONRepository.cs" />
     <Compile Include="Core\BaseRepository.cs" />
+    <Compile Include="PARAMETER\PARAMETERRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ROLE\ROLERepository.cs" />
     <Compile Include="USER\USERRepository.cs" />
   </ItemGroup>
   <ItemGroup>

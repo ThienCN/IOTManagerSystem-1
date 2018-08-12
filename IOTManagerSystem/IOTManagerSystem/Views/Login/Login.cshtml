@@ -35,7 +35,7 @@
         <div class="demo">
             <div class="login">
                 <div class="login__check">
-                    <img src="Picture/logo.png" width="60%" height="60%" />
+                    <img src="Picture/logo.png" style="margin-bottom:10%; margin-top:10%; margin-right: 0%;" width="60%" height="60%" />
                 </div>
                 <div style="text-align: center;">
                     <label class="name_login">Đăng nhập</label>
@@ -45,7 +45,7 @@
                         <svg class="login__icon name svg-icon" viewBox="0 0 20 20">
                             <path d="M0,20 a10,8 0 0,1 20,0z M10,0 a4,4 0 0,1 0,8 a4,4 0 0,1 0,-8" />
                         </svg>
-                        <input type="text" id="ten_tai_khoan" class="login__input name" placeholder="Tên đăng nhập" required />
+                        <input type="text" id="email" class="login__input name" autocomplete="off" placeholder="Tên đăng nhập" required />
                     </div>
                     <div class="login__row">
                         <svg class="login__icon pass svg-icon" viewBox="0 0 20 20">
@@ -115,22 +115,22 @@
     </div>
 
     <script>
-        var authenticationType, id_account;
+        var authenticationType, email;
 
         function Login() {
             blockUI(true);
             //Check login
+            email = $("#email").val();
             $.post('http://localhost:6060/api/login/CheckLogin', {
-                ten_tai_khoan: $("#ten_tai_khoan").val(),
+                email: email,
                 mat_khau: $("#mat_khau").val()
             }, function (data) {
                 if (data != null) {
                     authenticationType = data.id_loai_xac_thuc;
-                    id_account = data.id;
                     if (authenticationType != 4) {
                         if (authenticationType == 1) {
                             $.post('http://localhost:6060/api/login/SendAuthenticationGmail', {
-                                id: id_account
+                                email: email
                             }, function (data) {
                                 blockUI(false);
                                 if (data == true) {
@@ -148,26 +148,27 @@
                             });
                         }
                         else if (authenticationType == 2) {
-                            $.gritter.add({
-                                text: "Kiểm tra tin nhắn của bạn!",
-                                class_name: 'gritter-success'
-                            });
                             $.post('http://localhost:6060/api/login/SendAuthenticationSMS', {
-                                id: id_account
+                                email: email
                             }, function (result) {
                                 blockUI(false);
-                                if (result)
+                                if (result) {
                                     $("#authenticationLoginSMS").modal();
+                                    $.gritter.add({
+                                        text: "Kiểm tra tin nhắn của bạn!",
+                                        class_name: 'gritter-success'
+                                    });
+                                }
                                 else
                                     $.gritter.add({
-                                        text: "Xác thực không hợp lệ",
+                                        text: "Số điện thoại không tồn tại!",
                                         class_name: 'gritter-error'
                                     });
                             });
                         }
                         else if (authenticationType == 3) {
                             $.post('http://localhost:6060/api/login/SendAuthenticationGG', {
-                                id: id_account
+                                email: email
                             }, function (result) {
                                 blockUI(false);
                                 if (result != null) {
@@ -184,7 +185,7 @@
                         }
                     }
                     else {
-                        RedicrectPage(id_account);
+                        RedicrectPage();
                     }
                 }
                 else {
@@ -203,12 +204,12 @@
             var maCode = $("#ma_code").val();
             blockUI(true);
             $.post('http://localhost:6060/api/login/CheckAuthenticationLoginSMS', {
-                id: id_account,
+                email: email,
                 ma_code_xac_thuc: maCode
             }, function (result) {
                 blockUI(false);
                 if (result) {
-                    RedicrectPage(id_account);
+                    RedicrectPage();
                 }
                 else {
                     $.gritter.add({
@@ -226,12 +227,12 @@
             var maCode = $("#CodeDigitGG").val();
             blockUI(true);
             $.post('http://localhost:6060/api/login/CheckAuthenticationLoginGG', {
-                id: id_account,
+                email: email,
                 ma_code_xac_thuc: maCode
             }, function (result) {
                 blockUI(false);
                 if (result) {
-                    RedicrectPage(id_account);
+                    RedicrectPage();
                 }
                 else {
                     $.gritter.add({
@@ -245,16 +246,17 @@
             SendAuthenticationGG();
         });
 
-        function RedicrectPage(id_account) {
+        function RedicrectPage() {
             //Save name user
             $.post('Login/SaveLogin', {
-                id_account: id_account
+                email: email
             }, function (result) {
                 blockUI(false);
-                $("#authenticationLoginSMS").modal('hide');
                 if (result.ma_role == 'admin')
                     window.location.assign("PageAdmin");
                 if (result.ma_role == 'employee')
+                    window.location.assign("PageEmployee");
+                if (result.ma_role == 'user')
                     window.location.assign("PageUser");
             });
         }

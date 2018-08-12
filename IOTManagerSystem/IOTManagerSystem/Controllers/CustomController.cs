@@ -15,10 +15,23 @@ namespace IOTManagerSystem.Controllers
         protected override void Initialize(System.Web.Routing.RequestContext requestContext)
         {
             base.Initialize(requestContext);
-            var temp = FormsAuthentication.Decrypt(Request.Cookies[FormsAuthentication.FormsCookieName].Value).Name;
             loginedUser = new USERModel();
-            loginedUser.ma_nguoi_dung = EncryptTo.Encrypt(temp.Split('_')[0]);
-            loginedUser.ho_ten_nguoi_dung = temp.Split('_')[1];
+            try
+            {
+                var temp = FormsAuthentication.Decrypt(Request.Cookies[FormsAuthentication.FormsCookieName].Value).Name;
+                if (temp.Contains('_'))
+                {
+                    loginedUser.ma_nguoi_dung = EncryptTo.Encrypt(temp.Split('_')[0]);
+                    loginedUser.ho_ten_nguoi_dung = temp.Split('_')[1];
+                }
+                else
+                    loginedUser = null;
+            }
+            catch (Exception)
+            {
+                loginedUser = null;
+            }
+            
         }
     }
 }

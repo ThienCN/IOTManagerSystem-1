@@ -52,12 +52,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ACCOUNT\ACCOUNTModel.cs" />
-    <Compile Include="ACCOUNT\IACCOUNTRepository.cs" />
     <Compile Include="Core\Interfaces\IRepository.cs" />
     <Compile Include="ErrorModel.cs" />
+    <Compile Include="PARAMETER\IPARAMETERRepository.cs" />
+    <Compile Include="PARAMETER\PARAMETERModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ResponseModel.cs" />
+    <Compile Include="ROLE\IROLERepository.cs" />
+    <Compile Include="ROLE\ROLEModel.cs" />
     <Compile Include="USER\USERModel.cs" />
     <Compile Include="USER\IUSERRepository.cs" />
   </ItemGroup>

@@ -17,12 +17,20 @@ namespace IOTManagerSystem.Model.USER
         public string email { get; set; }
         public string dia_chi { get; set; }
         public string avartar { get; set; }
-        public string ngay_sinh { get; set; }
+        public DateTime ngay_sinh { get; set; }
         public string noi_sinh { get; set; }
 
         public int id_role { get; set; }
         public string ma_role { get; set; }
         public string ten_role { get; set; }
+
+        public string mat_khau { get; set; }
+        public int id_loai_xac_thuc { get; set; }
+        public int tinh_trang { get; set; }
+        public string thoi_gian_login_gmail { get; set; }
+
+        public string ten_tham_so { get; set; }
+        public string ma_code_xac_thuc { get; set; }
 
     }
 }
