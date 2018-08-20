@@ -1,0 +1,81 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>@ViewBag.Title</title>
+    <link rel="stylesheet" href="~/Content/bootstrap.min.css">
+    <link rel="stylesheet" href="~/Content/w3.css">
+    <link rel="stylesheet" href="~/Content/font-awesome.min.css">
+
+    <script type="text/javascript" src="~/Scripts/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="~/Scripts/bootstrap.min.js"></script>
+    <script type="text/javascript" src="~/Scripts/bootstrap-datepicker.js"></script>
+
+    <link rel="stylesheet" href="~/Content/bootstrap-datepicker.css">
+
+    <script type="text/javascript" src="~/Scripts/jquery.validate.min.js"></script>
+    <script type="text/javascript" src="~/Scripts/jquery.form.js"></script>
+    <script type="text/javascript" src="~/Scripts/jquery.blockUI.js"></script>
+    <script type="text/javascript" src="~/Scripts/jquery.gritter.js"></script>
+    <link rel="stylesheet" href="~/Content/jquery.gritter.css">
+
+    @Styles.Render("~/Content/kendo/css")
+    @Scripts.Render("~/bundles/kendo")
+
+    <link rel="stylesheet" href="~/Content/header_menu.css">
+    <link rel="stylesheet" href="~/Content/mystyle.css">
+    <script type="text/javascript">
+        //set current to the "en-GB" culture script
+        kendo.culture("vi-VN");
+    </script>
+</head>
+<body>
+    <!-- HEADER -->
+    <header id="header">
+        <!-- LOGO HOTEL -->
+        <div class="container" style="padding-bottom: 5px;">
+            <img src="/Picture/logotitle.png" alt="logo" class="logo w3-animate-zoom ">
+        </div>
+        <nav class="navbar navbar-default">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#nav-left">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <div class="navbar-brand">
+                        <a href="#">
+                            <i id="iconTitle"></i>
+                            <span class="page-trich-dan">@ViewBag.Title</span>
+                        </a>
+                    </div>
+                </div>
+                <div class="nav navbar-nav navbar-right">
+                    <a class="image-nhan-vien" style="text-decoration:none"><img src="/Picture/doremon.png" alt="NhanVien"><span>Admin: @ViewBag.NameUser</span></a>
+                </div>
+            </div>
+    </header>
+
+    <!-- MENU-LEFT -->
+    <section>
+        <nav class="navbar-default nav-menu">
+            <div id="nav-left" class="navbar-collapse collapse">
+                <ul class="nav">
+                    <li id="trang-cua-ban"><a href="@Url.Action("Index", "PageAdmin")"><i class="fa fa-user-secret"></i> Trang của bạn</a></li>
+                    <li id="quan-ly-nguoi-dung"><a href="@Url.Action("ManagerUser", "ManagerUser")"><i class="fa fa-users"></i> Quản lý người dùng</a></li>
+                    <li id="quan-ly-nhan-vien"><a href="@Url.Action("Index", "ManagerEmployee")"><i class="fa fa-address-book"></i> Quản lý nhân viên</a></li>
+                    <li><a href="@Url.Action("Logout", "Login")"><i class="fa fa-sign-out"></i> Thoát </a></li>
+                </ul>
+            </div>
+        </nav>
+    </section>
+
+    <!-- CONTENT -->
+    <section class="phan-noi-dung">
+        @RenderBody()
+    </section>
+</body>
+</html>

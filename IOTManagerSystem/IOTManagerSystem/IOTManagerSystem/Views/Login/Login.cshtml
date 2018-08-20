@@ -1,0 +1,276 @@
+﻿
+@{
+    Layout = "";
+    ViewBag.Title = "Login";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=yes">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Login</title>
+
+    <link rel='stylesheet prefetch' href='https://fonts.googleapis.com/css?family=Open+Sans'>
+
+    <script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
+
+    <script src="~/Scripts/jquery-3.3.1.min.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="~/Content/bootstrap.min.css">
+
+
+    <link rel="stylesheet" href="~/Content/jquery.gritter.css">
+    <script src="~/Scripts/jquery.gritter.js"></script>
+    <script src="~/Scripts/jquery.gritter.min.js"></script>
+    <script src="~/Scripts/jquery.blockui.min.js"></script>
+    <script src="~/Scripts/jquery.blockUI.js"></script>
+
+    <link rel="stylesheet" href="~/Content/login.css">
+</head>
+<body>
+
+    <div class="cont">
+        <div class="demo">
+            <div class="login">
+                <div class="login__check">
+                    <img src="Picture/logo.png" style="margin-bottom:10%; margin-top:10%; margin-right: 0%;" width="60%" height="60%" />
+                </div>
+                <div style="text-align: center;">
+                    <label class="name_login">Đăng nhập</label>
+                </div>
+                <div class="login__form">
+                    <div class="login__row">
+                        <svg class="login__icon name svg-icon" viewBox="0 0 20 20">
+                            <path d="M0,20 a10,8 0 0,1 20,0z M10,0 a4,4 0 0,1 0,8 a4,4 0 0,1 0,-8" />
+                        </svg>
+                        <input type="text" id="email" class="login__input name" autocomplete="off" placeholder="Tên đăng nhập" required />
+                    </div>
+                    <div class="login__row">
+                        <svg class="login__icon pass svg-icon" viewBox="0 0 20 20">
+                            <path d="M0,20 20,20 20,8 0,8z M10,13 10,16z M4,8 a6,8 0 0,1 12,0" />
+                        </svg>
+                        <input type="password" id="mat_khau" class="login__input pass" onkeypress="if(event.keyCode === 13){Login()}"  placeholder="Mật khẩu" required />
+                    </div>
+                    <button type="button" id="login_btn" class="login__submit">Sign in</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--Modal xác thực SMS-->
+    <div class="modal fade" id="authenticationLoginSMS" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content" style="font-size:15px;">
+                <div class="modal-header" style="background-color: #0b3147; color: white">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title"><label>Xác thực đăng nhập</label></h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-horizontal">
+                        <div class="form-group">
+                            <label class="control-label col-sm-4">Mã code:</label>
+                            <div class="col-sm-8">
+                                <input id="ma_code" type="text" class="form-control" onkeypress="if (event.keyCode === 13) {SendAuthenticationSMS()}">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button id="SendAuthenticationSMS" type="button" class="btn btn-default" style="background-color: #0b3147; color: white">Gửi</button>
+                    <button type="button" class="btn btn-default" style="background-color: #0b3147; color: white" data-dismiss="modal">Đóng</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--Modal xác thực GG-->
+    <div class="modal fade" id="authenticationLoginGG" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content" style="font-size:15px;">
+                <div class="modal-header" style="background-color: #0b3147; color: white">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title"><label>Xác thực đăng nhập</label></h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-horizontal">
+                        <div class="form-group">
+                            <img id="BarcodeImageUrl" />
+                        </div>
+                        <div class="form-group">
+                            <label style="margin-left: 5%">Nhập mã code: </label>
+                            <input type="text" id="CodeDigitGG" onkeypress="if (event.keyCode === 13) {SendAuthenticationGG()}"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button id="SendAuthenticationGG" type="button" class="btn btn-default" style="background-color: #0b3147; color: white">Gửi</button>
+                    <button type="button" class="btn btn-default" style="background-color: #0b3147; color: white" data-dismiss="modal">Đóng</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        var authenticationType, email;
+
+        function Login() {
+            blockUI(true);
+            //Check login
+            email = $("#email").val();
+            $.post('http://localhost:6060/api/login/CheckLogin', {
+                email: email,
+                mat_khau: $("#mat_khau").val()
+            }, function (data) {
+                if (data != null) {
+                    authenticationType = data.id_loai_xac_thuc;
+                    if (authenticationType != 4) {
+                        if (authenticationType == 1) {
+                            $.post('http://localhost:6060/api/login/SendAuthenticationGmail', {
+                                email: email
+                            }, function (data) {
+                                blockUI(false);
+                                if (data == true) {
+                                    $.gritter.add({
+                                        text: "Kiểm tra gmail của bạn!",
+                                        class_name: 'gritter-success'
+                                    });
+                                }
+                                else {
+                                    $.gritter.add({
+                                        text: "Xác thực không hợp lệ",
+                                        class_name: 'gritter-error'
+                                    });
+                                }
+                            });
+                        }
+                        else if (authenticationType == 2) {
+                            $.post('http://localhost:6060/api/login/SendAuthenticationSMS', {
+                                email: email
+                            }, function (result) {
+                                blockUI(false);
+                                if (result) {
+                                    $("#authenticationLoginSMS").modal();
+                                    $.gritter.add({
+                                        text: "Kiểm tra tin nhắn của bạn!",
+                                        class_name: 'gritter-success'
+                                    });
+                                }
+                                else
+                                    $.gritter.add({
+                                        text: "Số điện thoại không tồn tại!",
+                                        class_name: 'gritter-error'
+                                    });
+                            });
+                        }
+                        else if (authenticationType == 3) {
+                            $.post('http://localhost:6060/api/login/SendAuthenticationGG', {
+                                email: email
+                            }, function (result) {
+                                blockUI(false);
+                                if (result != null) {
+                                    $("#authenticationLoginGG").modal();
+                                    $("#BarcodeImageUrl").attr("src", result);
+                                    $("#CodeDigitGG").css("border", "groove");
+                                }
+                                else
+                                    $.gritter.add({
+                                        text: "Xác thực không hợp lệ",
+                                        class_name: 'gritter-error'
+                                    });
+                            });
+                        }
+                    }
+                    else {
+                        RedicrectPage();
+                    }
+                }
+                else {
+                    $.gritter.add({
+                        text: "Tài khoản đăng nhập không đúng",
+                        class_name: 'gritter-error'
+                    });
+                }
+            });
+        }
+        $("#login_btn").click(function () {
+            Login();
+        });
+
+        function SendAuthenticationSMS() {
+            var maCode = $("#ma_code").val();
+            blockUI(true);
+            $.post('http://localhost:6060/api/login/CheckAuthenticationLoginSMS', {
+                email: email,
+                ma_code_xac_thuc: maCode
+            }, function (result) {
+                blockUI(false);
+                if (result) {
+                    RedicrectPage();
+                }
+                else {
+                    $.gritter.add({
+                        text: "Mã xác thực không đúng!",
+                        class_name: 'gritter-error'
+                    });
+                }
+            });
+        }
+        $("#SendAuthenticationSMS").click(function () {
+            SendAuthenticationSMS();
+        });
+
+        function SendAuthenticationGG() {
+            var maCode = $("#CodeDigitGG").val();
+            blockUI(true);
+            $.post('http://localhost:6060/api/login/CheckAuthenticationLoginGG', {
+                email: email,
+                ma_code_xac_thuc: maCode
+            }, function (result) {
+                blockUI(false);
+                if (result) {
+                    RedicrectPage();
+                }
+                else {
+                    $.gritter.add({
+                        text: "Mã xác thực không đúng!",
+                        class_name: 'gritter-error'
+                    });
+                }
+            });
+        }
+        $("#SendAuthenticationGG").click(function () {
+            SendAuthenticationGG();
+        });
+
+        function RedicrectPage() {
+            //Save name user
+            $.post('Login/SaveLogin', {
+                email: email
+            }, function (result) {
+                blockUI(false);
+                if (result.ma_role == 'admin')
+                    window.location.assign("PageAdmin");
+                if (result.ma_role == 'employee')
+                    window.location.assign("PageEmployee");
+                if (result.ma_role == 'user')
+                    window.location.assign("PageUser");
+            });
+        }
+
+        function blockUI(isMark) {
+            if (isMark) {
+                $(document).ajaxStart($.blockUI({ message: '<i class="fa fa-spinner fa-3x fa-lg fa-spin txt-color-blueDark"></i>', theme: false })).ajaxStop($.unblockUI);
+            }
+            else {
+                $(document).ajaxStart($.blockUI({ message: '<i class="fa fa-spinner fa-3x fa-lg fa-spin txt-color-blueDark"></i>', theme: false, overlayCSS: { backgroundColor: 'transparent' } })).ajaxStop($.unblockUI);
+            }
+        }
+    </script>
+</body>
+</html>
+
+
