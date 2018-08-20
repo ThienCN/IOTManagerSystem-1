@@ -52,7 +52,7 @@
       <HintPath>..\packages\Dapper.1.50.5\lib\net451\Dapper.dll</HintPath>
     </Reference>
     <Reference Include="Kendo.Mvc">
-      <HintPath>..\..\..\..\Kendo\ASP.MVC\Progress\Telerik UI for ASP.NET MVC R2 2018\wrappers\aspnetmvc\Binaries\Mvc5\Kendo.Mvc.dll</HintPath>
+      <HintPath>C:\Program Files (x86)\Progress\Telerik UI for ASP.NET MVC R2 2018\wrappers\aspnetmvc\Binaries\Mvc5\Kendo.Mvc.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System" />
@@ -156,6 +156,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\CustomController.cs" />
+    <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\PageEmployeeController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\ManagerEmployeeController.cs" />
@@ -165,7 +166,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Helpers\Upload.cs" />
+    <Compile Include="More\UploadFile.cs" />
     <Compile Include="obj\Debug\TemporaryGeneratedFile_036C0B5B-1481-4323-8D20-8F5ADCB23D92.cs" />
     <Compile Include="obj\Debug\TemporaryGeneratedFile_5937a670-0e60-4077-877b-f7221da3dda1.cs" />
     <Compile Include="obj\Debug\TemporaryGeneratedFile_E7A71F73-0F8D-4B9B-B56E-8E70B10BC5D3.cs" />
@@ -264,11 +265,58 @@
     <Content Include="bin\System.Web.WebPages.Razor.xml" />
     <Content Include="bin\System.Web.WebPages.xml" />
     <Content Include="bin\WebGrease.dll" />
-    <Content Include="Content\bootstrap-datepicker.css" />
+    <Content Include="Content\bootstrap-datetimepicker.min.css" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
+    <Content Include="Content\bootstrap-timepicker.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\colorpicker.css" />
+    <Content Include="Picture\doremon.png" />
+    <Content Include="Scripts\date-time\bootstrap-datepicker.js" />
+    <Content Include="Scripts\date-time\bootstrap-timepicker.js" />
+    <Content Include="Scripts\date-time\daterangepicker.js" />
+    <Content Include="Scripts\date-time\locales\bootstrap-datepicker.bg.js" />
+    <Content Include="Scripts\date-time\locales\bootstrap-datepicker.ca.js" />
+    <Content Include="Scripts\date-time\locales\bootstrap-datepicker.cs.js" />
+    <Content Include="Scripts\date-time\locales\bootstrap-datepicker.da.js" />
+    <Content Include="Scripts\date-time\locales\bootstrap-datepicker.de.js" />
+    <Content Include="Scripts\date-time\locales\bootstrap-datepicker.el.js" />
+    <Content Include="Scripts\date-time\locales\bootstrap-datepicker.es.js" />
+    <Content Include="Scripts\date-time\locales\bootstrap-datepicker.fi.js" />
+    <Content Include="Scripts\date-time\locales\bootstrap-datepicker.fr.js" />
+    <Content Include="Scripts\date-time\locales\bootstrap-datepicker.he.js" />
+    <Content Include="Scripts\date-time\locales\bootstrap-datepicker.hr.js" />
+    <Content Include="Scripts\date-time\locales\bootstrap-datepicker.hu.js" />
+    <Content Include="Scripts\date-time\locales\bootstrap-datepicker.id.js" />
+    <Content Include="Scripts\date-time\locales\bootstrap-datepicker.is.js" />
+    <Content Include="Scripts\date-time\locales\bootstrap-datepicker.it.js" />
+    <Content Include="Scripts\date-time\locales\bootstrap-datepicker.ja.js" />
+    <Content Include="Scripts\date-time\locales\bootstrap-datepicker.kr.js" />
+    <Content Include="Scripts\date-time\locales\bootstrap-datepicker.lt.js" />
+    <Content Include="Scripts\date-time\locales\bootstrap-datepicker.lv.js" />
+    <Content Include="Scripts\date-time\locales\bootstrap-datepicker.ms.js" />
+    <Content Include="Scripts\date-time\locales\bootstrap-datepicker.nb.js" />
+    <Content Include="Scripts\date-time\locales\bootstrap-datepicker.nl.js" />
+    <Content Include="Scripts\date-time\locales\bootstrap-datepicker.pl.js" />
+    <Content Include="Scripts\date-time\locales\bootstrap-datepicker.pt-BR.js" />
+    <Content Include="Scripts\date-time\locales\bootstrap-datepicker.pt.js" />
+    <Content Include="Scripts\date-time\locales\bootstrap-datepicker.ro.js" />
+    <Content Include="Scripts\date-time\locales\bootstrap-datepicker.rs-latin.js" />
+    <Content Include="Scripts\date-time\locales\bootstrap-datepicker.rs.js" />
+    <Content Include="Scripts\date-time\locales\bootstrap-datepicker.ru.js" />
+    <Content Include="Scripts\date-time\locales\bootstrap-datepicker.sk.js" />
+    <Content Include="Scripts\date-time\locales\bootstrap-datepicker.sl.js" />
+    <Content Include="Scripts\date-time\locales\bootstrap-datepicker.sv.js" />
+    <Content Include="Scripts\date-time\locales\bootstrap-datepicker.sw.js" />
+    <Content Include="Scripts\date-time\locales\bootstrap-datepicker.th.js" />
+    <Content Include="Scripts\date-time\locales\bootstrap-datepicker.tr.js" />
+    <Content Include="Scripts\date-time\locales\bootstrap-datepicker.uk.js" />
+    <Content Include="Scripts\date-time\locales\bootstrap-datepicker.zh-CN.js" />
+    <Content Include="Scripts\date-time\locales\bootstrap-datepicker.zh-TW.js" />
+    <Content Include="Scripts\date-time\moment.js" />
+    <Content Include="Content\datepicker.css" />
+    <Content Include="Content\daterangepicker.css" />
     <Content Include="Content\font-awesome.min.css" />
     <Content Include="Content\header_menu.css" />
     <Content Include="Content\img\gritter-error.png" />
@@ -618,7 +666,6 @@
     <Content Include="Content\kendo\Uniform\sprite_2x.png" />
     <Content Include="Content\kendo\Uniform\sprite_kpi.png" />
     <Content Include="Content\kendo\Uniform\sprite_kpi_2x.png" />
-    <Content Include="Content\mystyle.css" />
     <Content Include="Content\w3.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\fontawesome-webfont.svg" />
@@ -628,9 +675,10 @@
     <Content Include="obj\Debug\IOTManagerSystem.csproj.FileListAbsolute.txt" />
     <Content Include="obj\Debug\IOTManagerSystem.dll" />
     <Content Include="obj\Debug\IOTManagerSystem.pdb" />
-    <Content Include="Picture\doremon.png" />
     <Content Include="Picture\logo.png" />
     <Content Include="Picture\logotitle.png" />
+    <Content Include="Scripts\bootstrap-datetimepicker.js" />
+    <Content Include="Scripts\bootstrap-datetimepicker.min.js" />
     <Content Include="fonts\fontawesome-webfont.eot" />
     <Content Include="fonts\fontawesome-webfont.ttf" />
     <Content Include="fonts\fontawesome-webfont.woff" />
@@ -748,7 +796,6 @@
     <Content Include="Content\kendo\kendo.silver.mobile.min.css.map" />
     <Content Include="Content\kendo\kendo.uniform.min.css.map" />
     <Content Include="Content\kendo\kendo.uniform.mobile.min.css.map" />
-    <Content Include="Scripts\bootstrap-datepicker.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\esm\popper-utils.js" />
@@ -764,6 +811,7 @@
     <Content Include="Content\bootstrap.css.map" />
     <Content Include="Content\bootstrap-theme.min.css.map" />
     <Content Include="Content\bootstrap-theme.css.map" />
+    <Content Include="ApplicationInsights.config" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />
     <Content Include="Scripts\jquery-3.3.1.min.js" />
@@ -2846,6 +2894,8 @@
     <Content Include="Scripts\umd\popper-utils.min.js" />
     <Content Include="Scripts\umd\popper.js" />
     <Content Include="Scripts\umd\popper.min.js" />
+    <Content Include="UploadFile\AvatarUser\doremon.png" />
+    <Content Include="UploadFile\AvatarUser\[doremon2]_20180816140626567.png" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -2884,6 +2934,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="obj\Debug\TempPE\" />
+    <Folder Include="Views\Error\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

@@ -55,6 +55,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ACCESSRIGHT\ACCESSRIGHTRepository.cs" />
     <Compile Include="AUTHENTICATIONRepository.cs" />
     <Compile Include="Core\BaseRepository.cs" />
     <Compile Include="PARAMETER\PARAMETERRepository.cs" />

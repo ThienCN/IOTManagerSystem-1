@@ -52,6 +52,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ACCESSRIGHT\ACCESSRIGHTModel.cs" />
+    <Compile Include="ACCESSRIGHT\IACCESSRIGHTRepository.cs" />
     <Compile Include="Core\Interfaces\IRepository.cs" />
     <Compile Include="ErrorModel.cs" />
     <Compile Include="PARAMETER\IPARAMETERRepository.cs" />

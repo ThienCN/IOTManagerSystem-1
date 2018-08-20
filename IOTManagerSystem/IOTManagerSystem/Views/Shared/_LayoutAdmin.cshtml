@@ -11,21 +11,16 @@
 
     <script type="text/javascript" src="~/Scripts/jquery-3.3.1.min.js"></script>
     <script type="text/javascript" src="~/Scripts/bootstrap.min.js"></script>
-    <script type="text/javascript" src="~/Scripts/bootstrap-datepicker.js"></script>
-
-    <link rel="stylesheet" href="~/Content/bootstrap-datepicker.css">
-
-    <script type="text/javascript" src="~/Scripts/jquery.validate.min.js"></script>
-    <script type="text/javascript" src="~/Scripts/jquery.form.js"></script>
-    <script type="text/javascript" src="~/Scripts/jquery.blockUI.js"></script>
-    <script type="text/javascript" src="~/Scripts/jquery.gritter.js"></script>
-    <link rel="stylesheet" href="~/Content/jquery.gritter.css">
 
     @Styles.Render("~/Content/kendo/css")
     @Scripts.Render("~/bundles/kendo")
 
+    @Styles.Render("~/Content/template")
+    @Scripts.Render("~/bundles/template")
+
+    @Scripts.Render("~/bundles/validateform")
+
     <link rel="stylesheet" href="~/Content/header_menu.css">
-    <link rel="stylesheet" href="~/Content/mystyle.css">
     <script type="text/javascript">
         //set current to the "en-GB" culture script
         kendo.culture("vi-VN");

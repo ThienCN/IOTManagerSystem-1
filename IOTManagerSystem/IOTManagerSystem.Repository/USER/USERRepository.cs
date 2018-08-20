@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Data;
 using Dapper;
+using System.Text.RegularExpressions;
 
 namespace IOTManagerSystem.Repository.USER
 {
@@ -19,10 +20,7 @@ namespace IOTManagerSystem.Repository.USER
 
         public IEnumerable<USERModel> GetAll()
         {
-            return Query<USERModel>(@"SELECT [USER].id, ma_nguoi_dung, ho_ten_nguoi_dung, p.gia_tri_tham_so AS gioi_tinh, sdt,
-		                                    cmnd, email, dia_chi, avartar, ngay_sinh, noi_sinh, id_role, ten_role, p.ten_tham_so
-                                    FROM [USER], dbo.ROLE, dbo.PARAMETER p
-                                    WHERE id_role=ROLE.id AND gioi_tinh=p.ten_tham_so", CommandType.Text);
+            throw new NotImplementedException();
         }
 
         public USERModel GetById(int id)
@@ -37,11 +35,19 @@ namespace IOTManagerSystem.Repository.USER
 
         public bool Insert(USERModel model)
         {
-            throw new NotImplementedException();
-        }
+            var temp = GetByEmail(model.email);
+            if (temp != null)
+                return false;
+            var ma = "US";
+            var existLast = Query<USERModel>("SELECT TOP 1 id,ma_nguoi_dung FROM dbo.[USER] ORDER BY id DESC", CommandType.Text);
+            if(existLast != null)
+            {
+                int now = Int32.Parse(Regex.Match(existLast.First().ma_nguoi_dung, @"\d+").Value) + 1;
+                model.ma_nguoi_dung = ma + now.ToString("D4");
+            }
+            else
+                model.ma_nguoi_dung = ma + "0001";
 
-        public bool Update(USERModel model)
-        {
             DynamicParameters param = new DynamicParameters();
             param.Add("ma_nguoi_dung", model.ma_nguoi_dung);
             param.Add("ho_ten_nguoi_dung", model.ho_ten_nguoi_dung);
@@ -53,22 +59,37 @@ namespace IOTManagerSystem.Repository.USER
             param.Add("ngay_sinh", model.ngay_sinh);
             param.Add("noi_sinh", model.noi_sinh);
             param.Add("avartar", model.avartar);
+            param.Add("mat_khau", model.mat_khau);
+            param.Add("id_role", 2);
+            param.Add("type", "createuser");
+
+            return Execute<USERModel>("spUSER", CommandType.StoredProcedure, param);
+        }
+
+        public bool Update(USERModel model)
+        {
+            var temp = GetByEmail(model.email);
+            if (temp != null && temp.Count() > 1)
+                return false;
+            DynamicParameters param = new DynamicParameters();
+            param.Add("ma_nguoi_dung", model.ma_nguoi_dung);
+            param.Add("ho_ten_nguoi_dung", model.ho_ten_nguoi_dung);
+            param.Add("gioi_tinh", model.gioi_tinh);
+            param.Add("sdt", model.sdt);
+            param.Add("cmnd", model.cmnd);
+            param.Add("email", model.email);
+            param.Add("dia_chi", model.dia_chi);
+            param.Add("ngay_sinh", model.ngay_sinh);
+            param.Add("noi_sinh", model.noi_sinh);
+            param.Add("avartar", model.avartar);
+            param.Add("mat_khau", model.mat_khau);
+            param.Add("id_role", 2);
             param.Add("type", "updateuser");
 
             return Execute<USERModel>("spUSER", CommandType.StoredProcedure, param);
         }
 
-        public bool UpdatePassword(string ma_nguoi_dung, string mat_khau)
-        {
-            DynamicParameters param = new DynamicParameters();
-            param.Add("ma_nguoi_dung", ma_nguoi_dung);
-            param.Add("mat_khau", mat_khau);
-            param.Add("type", "updatepassworduser");
-
-            return Execute<USERModel>("spUSER", CommandType.StoredProcedure, param);
-        }
-
-        public USERModel GetByEmail(string email)
+        public IEnumerable<USERModel> GetByEmail(string email)
         {
             DynamicParameters param = new DynamicParameters();
             param.Add("email", email);
@@ -76,7 +97,7 @@ namespace IOTManagerSystem.Repository.USER
 
             IEnumerable<USERModel> list = Query<USERModel>("spUSER", CommandType.StoredProcedure, param);
             if (list != null && list.Count() > 0)
-                return list.First();
+                return list;
             return null;
         }
 
@@ -116,5 +137,14 @@ namespace IOTManagerSystem.Repository.USER
                 return list.First();
             return null;
         }
+
+        public IEnumerable<USERModel> GetAllUsers()
+        {
+            return Query<USERModel>(@"SELECT [USER].id, ma_nguoi_dung, ho_ten_nguoi_dung, p.gia_tri_tham_so AS gioi_tinh, sdt,
+		                                        cmnd, email, dia_chi, avartar, ngay_sinh, noi_sinh, id_role, ten_role, p.ten_tham_so
+                                        FROM [USER], dbo.ROLE, dbo.PARAMETER p
+                                        WHERE id_role=ROLE.id AND gioi_tinh=p.ten_tham_so AND ma_role='user'", CommandType.Text);
+        }
+
     }
 }

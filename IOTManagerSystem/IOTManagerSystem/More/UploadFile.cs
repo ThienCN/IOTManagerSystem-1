@@ -6,16 +6,16 @@ using System.Security.AccessControl;
 using System.Security.Principal;
 using System.Web;
 
-namespace IOTManagerSystem.Helpers
+namespace IOTManagerSystem.More
 {
-    public class Upload
+    public class UploadFile
     {
-        public static string UploadFile(System.Web.HttpPostedFileBase file)
+        public static string Upload(string FolderName, System.Web.HttpPostedFileBase file)
         {
             var fileName = Path.GetFileNameWithoutExtension(file.FileName);
             string refix = "[" + fileName + "]_" + DateTime.Now.ToString("yyyyMMddHHmmssfff");
             string extension = Path.GetExtension(file.FileName);
-            string FolderPath = System.Web.HttpContext.Current.Server.MapPath("~/Picture/");
+            string FolderPath = System.Web.HttpContext.Current.Server.MapPath("~/UploadFile/" + FolderName);
 
             var destinationPath = Path.Combine(FolderPath, refix + extension);
 
@@ -29,7 +29,7 @@ namespace IOTManagerSystem.Helpers
             dSecurity.AddAccessRule(new FileSystemAccessRule(new SecurityIdentifier(WellKnownSidType.WorldSid, null), FileSystemRights.FullControl, InheritanceFlags.ObjectInherit | InheritanceFlags.ContainerInherit, PropagationFlags.NoPropagateInherit, AccessControlType.Allow));
             dInfo.SetAccessControl(dSecurity);
             file.SaveAs(destinationPath);
-            return Path.Combine("/Picture/", refix + extension);
+            return Path.Combine("/UploadFile/" + FolderName, refix + extension);
         }
     }
 }

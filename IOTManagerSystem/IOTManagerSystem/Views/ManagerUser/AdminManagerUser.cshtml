@@ -7,10 +7,16 @@
 }
 
 <style>
+    .label-input {
+        border-radius: 10px;
+        background-color: #0b3147;
+    }
     .img-avartar {
         border-radius: 50%;
-        width: 50%;
-        height: 50%;
+        width: 100px;
+        height: 100px;
+        background-position: center center;
+        background-repeat: no-repeat;
     }
 
     .k-dropdown {
@@ -32,19 +38,18 @@
     .form-group {
         margin-bottom: 5px;
     }
+
+    @@media (min-width: 768px) {
+        #editAdd .modal-dialog {
+            width: 60%;
+        }
+    }
 </style>
 
 <div class="row-fluid">
     <div class="form-group row">
         <div class="col-xs-4">
             <input type="password" class="form-control" placeholder="Nhập mã,tên,địa chỉ,email,số điện thoại,số CMND">
-        </div>
-        <div class="col-xs-3">
-            <select id="role_filter" class='form-control'>
-                <option value="all">Tất cả</option>
-                <option value="admin">Quản trị viên</option>
-                <option value="employee">Nhân viên</option>
-            </select>
         </div>
         <div class="col-xs-3">
             <div class="form-group">
@@ -57,74 +62,76 @@
 
 <div class="row-fluid">
     @(Html.Kendo().Grid<IOTManagerSystem.Model.USER.USERModel>()
-                                        .Name("grid")
-                                        .Columns(columns =>
-                                        {
-                                            columns.Bound(p => p.id)
-                                                  .HeaderTemplate("<input type='checkbox' id= 'checkboxcheckAll'  onClick='checkAllDetail(this)' />")
-                                                  .ClientTemplate("<input class='checkrowid' type='checkbox' id='#=id#'/> ")
-                                                  .Width(25).Filterable(false).Sortable(false).HtmlAttributes(new { style = "text-align:center" });
-                                            columns.Template(@<text></text>).HtmlAttributes(new { style = "text-align: center;" })
-                                                                    .ClientTemplate("<span ><a class='btn btn-mini btn-warning' style ='width:15px' onclick='editUser(this)'><i class='fa fa-edit'></i></a></span>").Width(60);
+                                                .Name("grid")
+                                                .Columns(columns =>
+                                                {
+                                                    columns.Bound(p => p.id)
+                                                          .HeaderTemplate("<input type='checkbox' id= 'checkboxcheckAll'  onClick='checkAllDetail(this)' />")
+                                                          .ClientTemplate("<input class='checkrowid' type='checkbox' id='#=id#'/> ")
+                                                          .Width(25).Filterable(false).Sortable(false).HtmlAttributes(new { style = "text-align:center" });
+                                                    columns.Template(@<text></text>).HtmlAttributes(new { style = "text-align: center;" })
+                                                                                    .ClientTemplate("<span ><a class='btn btn-mini btn-warning' style ='width:15px' onclick='editUser(this)'><i class='fa fa-edit'></i></a></span>").Width(60);
+                                                    columns.Bound(p => p.avartar).Title("Avartar").Width(150).Hidden();
                                                     columns.Bound(p => p.ma_nguoi_dung).Title("Mã người dùng").Width(150);
+                                                    columns.Bound(p => p.avartar)
+                                                            .ClientTemplate(@"<img src='#=avartar ? avartar : '/Picture/doremon.png'#' style='width:50px;height: 50px;border-radius:50%;text-align:center;'>")
+                                                            .Width(100).Title("Hình ảnh").HtmlAttributes(new { style = "text-align:center" });
                                                     columns.Bound(p => p.ho_ten_nguoi_dung).Title("Họ tên").Width(200);
                                                     columns.Bound(p => p.gioi_tinh).Title("Giới tính").Width(80);
                                                     columns.Bound(p => p.sdt).Title("SDT").Width(120);
                                                     columns.Bound(p => p.cmnd).Title("CMND").Width(120);
-                                                    columns.Bound(p => p.email).Title("Email").Width(200);
-                                                    columns.Bound(p => p.dia_chi).Title("Địa chỉ").Width(150);
+                                                    columns.Bound(p => p.email).Title("Email").Width(250);
+                                                    columns.Bound(p => p.dia_chi).Title("Địa chỉ").Width(250);
                                                     columns.Bound(p => p.ngay_sinh).Title("Ngày sinh").Width(100).Format("{0:dd/MM/yyyy}");
                                                     columns.Bound(p => p.noi_sinh).Title("Nơi sinh").Width(100);
-                                                    columns.Bound(p => p.ten_role).Title("Quyền").Width(150);
                                                     columns.Bound(p => p.ten_tham_so).Hidden();
                                                 })
-                                                                .ToolBar(s =>
-                                                                {
-                                                                    s.Custom().Text("Thêm")
-                                                                        .HtmlAttributes(new { @class = "btn btn-success btn-small", @Href = "javascript:void(0)", @onclick = "addUser(this)" });
+                                                .ToolBar(s =>
+                                                {
+                                                    s.Custom().Text("Thêm")
+                                                        .HtmlAttributes(new { @class = "btn btn-success btn-small", @Href = "javascript:void(0)", @onclick = "addUser(this)" });
 
-                                                                    s.Custom().Text("Xóa")
-                                                                        .HtmlAttributes(new { @class = "btn btn-danger btn-small", @Href = "javascript:void(0)", @onclick = "showConfirmPopup()" });
-                                                                })
-                                                                //.Pageable()
-                                                                .Sortable()
-                                                                .Selectable(s => s.Mode(GridSelectionMode.Single).Type(GridSelectionType.Row))
-                                                                .Pageable(p => p
-                                                                    .Messages(m => m
-                                                                            .Display("{0}-{1} của {2} dòng")
-                                                                            .Empty("Không có dòng nào")
-                                                                            .ItemsPerPage("")
-                                                                            .First("Trang kế")
-                                                                            .Last("Trang tiếp")
-                                                                            .Next("Đầu trang")
-                                                                            .Previous("Cuối trang")
-                                                                    ).PageSizes(new[] { 10, 20, 30, 40, 50 })
-                                                                )
-                                                                .Editable(editable => editable.Mode(GridEditMode.InCell))
-                                                                .Scrollable()
-                                                                .Events(e => { e.DataBound("Databound"); })
-                                                                .Reorderable(r => r.Columns(true))
-                                                                .Resizable(r => r.Columns(true))
-                                                                .DataSource(dataSource => dataSource
-                                                                    .Ajax()
-                                                                    .Sort(s =>
-                                                                    {
-                                                                        s.Add("id");
-                                                                    })
-                                                                    .PageSize(10)
-                                                                    .Model(model =>
-                                                                    {
-                                                                        model.Id(p => p.id);
-                                                                    })
-                                                                    .Read(read => read.Action("ReadUsers", "ManagerUser"))
-
-                                                                ))
+                                                    s.Custom().Text("Xóa")
+                                                        .HtmlAttributes(new { @class = "btn btn-danger btn-small", @Href = "javascript:void(0)", @onclick = "showConfirmPopup()" });
+                                                })
+                                                //.Pageable()
+                                                .Sortable()
+                                                .Selectable(s => s.Mode(GridSelectionMode.Single).Type(GridSelectionType.Row))
+                                                .Pageable(p => p
+                                                    .Messages(m => m
+                                                            .Display("{0}-{1} của {2} dòng")
+                                                            .Empty("Không có dòng nào")
+                                                            .ItemsPerPage("")
+                                                            .First("Trang kế")
+                                                            .Last("Trang tiếp")
+                                                            .Next("Đầu trang")
+                                                            .Previous("Cuối trang")
+                                                    ).PageSizes(new[] { 10, 20, 30, 40, 50 })
+                                                )
+                                                //.Editable(editable => editable.Mode(GridEditMode.InCell))
+                                                .Scrollable()
+                                                .Events(e => { e.DataBound("Databound"); })
+                                                .Reorderable(r => r.Columns(true))
+                                                .Resizable(r => r.Columns(true))
+                                                .DataSource(dataSource => dataSource
+                                                    .Ajax()
+                                                    .Sort(s =>
+                                                    {
+                                                        s.Add("id");
+                                                    })
+                                                    .PageSize(10)
+                                                    .Model(model =>
+                                                    {
+                                                        model.Id(p => p.id);
+                                                    })
+                                                    .Read(read => read.Action("ReadUsers", "ManagerUser"))
+                                                ))
 </div>
 
 <div class="modal" id="editAdd">
     <div class="modal-dialog">
         <!-- Modal content-->
-        <form action=@Url.Action("UpdateProfile", "PageUser") id="updateProfileForm" method="post" enctype="multipart/form-data" style="margin:0px">
+        <form action=@Url.Action("CreateUpdateProfile", "ManagerUser") onsubmit="return ValidateUpdateProfile()" id="createUpdateProfileForm" method="post" enctype="multipart/form-data" style="margin:0px">
             <div class="modal-content">
                 <div class="modal-header" style="background-color: #0b3147; color: white;">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
@@ -133,7 +140,7 @@
                 <div class="modal-body editAdd" style="padding-bottom:0px; padding-top:0px;">
                 </div>
                 <div class="modal-footer">
-                    <button onclick="saveProfileNew()" type="submit" class="btn btn-default" style="background-color: #0b3147; color: white">Cập nhật</button>
+                    <button onclick="SaveProfile()" id="btnCreateUpdateProfile" type="button" class="btn btn-default" style="background-color: #0b3147; color: white">Cập nhật</button>
                     <button type="button" class="btn btn-default" style="background-color: #0b3147; color: white" data-dismiss="modal">Close</button>
                 </div>
             </div>
@@ -142,115 +149,80 @@
 </div>
 
 <script type="text/template" id="EditAddTemplate">
-    <div class="form-horizontal">
-        <input type="hidden" name="ma_nguoi_dung" value="#=ma_nguoi_dung!=null ? ma_nguoi_dung :''#" />
-        <div class="form-group row col-sm-12">
-            <div class="col-sm-6">
-                <label class="control-label">Họ tên:</label>
-                <div class="controls">
-                    <input type="text" name="ho_ten_nguoi_dung" placeholder="Họ tên" class="form-control col-sm-12" value="#=ho_ten_nguoi_dung!=null ? ho_ten_nguoi_dung :''#">
+    <div class="w3-row" style="padding: 10px;">
+        <input type="hidden" name="ma_nguoi_dung" value="#=ma_nguoi_dung!=null ? ma_nguoi_dung : '0' #" />
+        <div class="w3-col w3-container s12 m7 l8">
+            <div class="form-horizontal">
+                <div class="form-group">
+                    <label class="control-label col-sm-4">Họ tên (*):</label>
+                    <div class="col-sm-8">
+                        <input type="text" name="ho_ten_nguoi_dung" class="form-control" value="#=ho_ten_nguoi_dung!=null ? ho_ten_nguoi_dung :''#">
+                    </div>
                 </div>
-            </div>
-            <div class="col-sm-6">
-                <label class="control-label">Giới tính:</label>
-                <div class="controls col-sm-12" style="padding-left:0px; padding-right:0px;">
-                    @(Html.Kendo().DropDownList()
-                                            .Name("gioi_tinh")
-                                            .DataTextField("gia_tri_tham_so")
-                                            .DataValueField("ten_tham_so")
-                                            .HtmlAttributes(new { @class = "span12" })
-                                            .Filter("contains")
-                                            .OptionLabel("-- Giới tính --")
-                                            .BindTo(ViewBag.ListGioiTinh)
-                                            .Value("#=ten_tham_so != null ? ten_tham_so : null #")
-                                            .ToClientTemplate()
-                    )
+                <div class="form-group">
+                    <label class="control-label col-sm-4">Giới tính:</label>
+                    <div class="col-sm-8">
+                        <div class="controls col-sm-12" style="padding-left:0px; padding-right:0px;">
+                            <select id="gioi_tinh" name="gioi_tinh" class='form-control'>
+                                <option value="GIOITINH1">Nữ</option>
+                                <option value="GIOITINH0">Nam</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-4">Ngày sinh:</label>
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control date-picker" name="ngay_sinh" value="#=kendo.toString(kendo.parseDate(ngay_sinh),'dd/MM/yyyy') !='01/01/0001' && kendo.toString(kendo.parseDate(ngay_sinh),'dd/MM/yyyy') !='01/01/1900'  ? kendo.toString(kendo.parseDate(ngay_sinh),'dd/MM/yyyy'): kendo.toString(kendo.parseDate(new Date()),'dd/MM/yyyy') #">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-4">Nơi sinh:</label>
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control" name="noi_sinh" value="#=noi_sinh!=null ? noi_sinh :''#">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-4">Số điện thoại (*):</label>
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control" name="sdt" value="#=sdt!=null ? sdt :''#">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-4">CMND (*):</label>
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control" name="cmnd" value="#=cmnd!=null ? cmnd :''#">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-4">Email (*):</label>
+                    <div class="col-sm-8">
+                        <input type="email" class="form-control" name="email" value="#=email!=null ? email :''#">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-4">Địa chỉ:</label>
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control" name="dia_chi" value="#=dia_chi!=null ? dia_chi :''#">
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="form-group row col-sm-12">
-            <div class="col-sm-6">
-                <label class="control-label">Ngày sinh:</label>
-                <div class="controls">
-                    <input type="text" class="form-control date-picker col-sm-12" name="ngay_sinh" value="#=kendo.toString(kendo.parseDate(ngay_sinh),'dd/MM/yyyy') !='01/01/0001' && kendo.toString(kendo.parseDate(ngay_sinh),'dd/MM/yyyy') !='01/01/1900'  ? kendo.toString(kendo.parseDate(ngay_sinh),'dd/MM/yyyy'): kendo.toString(kendo.parseDate(new Date()),'dd/MM/yyyy') #">
-                </div>
-            </div>
-            <div class="col-sm-6">
-                <label class="control-label">Email:</label>
-                <div class="controls">
-                    <input type="email" class="form-control col-sm-12" name="email" placeholder="Email" value="#=email!=null ? email :''#">
-                </div>
-            </div>
-        </div>
-        <div class="form-group row col-sm-12">
-            <div class="col-sm-6">
-                <label class="control-label">Số điện thoại:</label>
-                <div class="controls">
-                    <input type="text" class="form-control col-sm-12" placeholder="Số điện thoại" name="sdt" value="#=sdt!=null ? sdt :''#">
-                </div>
-            </div>
-            <div class="col-sm-6">
-                <label class="control-label">CMND:</label>
-                <div class="controls">
-                    <input type="text" class="form-control col-sm-12" placeholder="Số cmnd" name="cmnd" value="#=cmnd!=null ? cmnd :''#">
-                </div>
-            </div>
-        </div>
-        <div class="form-group row col-sm-12" style="padding-left:30px; padding-right:30px">
-            <label class="control-label">Nơi sinh:</label>
-            <div class="controls">
-                <input type="text" class="form-control col-sm-12" placeholder="Nơi sinh" name="noi_sinh" value="#=noi_sinh!=null ? noi_sinh :''#">
-            </div>
-        </div>
-        <div class="form-group row col-sm-12" style="padding-left:30px; padding-right:30px">
-            <label class="control-label">Địa chỉ</label>
-            <div class="controls">
-                <input type="text" class="form-control col-sm-12" placeholder="Địa chỉ" name="dia_chi" value="#=dia_chi!=null ? dia_chi :''#">
-            </div>
-        </div>
-        <div class="form-group row col-sm-12">
-            <div class="col-sm-6">
-                <label class="control-label">Tên tài khoản:</label>
-                <div class="controls">
-                    <input type="text" name="ten_tai_khoan" placeholder="Tên tài khoản" class="form-control col-sm-12" value="#=ten_tai_khoan!=null ? ten_tai_khoan :''#">
-                </div>
-                <label class="control-label">Mật khẩu:</label>
-                <div class="controls">
-                    <input type="password" name="mat_khau" placeholder="Mật khẩu" class="form-control col-sm-12" value="#=mat_khau!=null ? mat_khau :''#">
-                </div>
-                <label class="control-label">Quyền:</label>
-                <div class="controls col-sm-12" style="padding-left:0px; padding-right:0px;">
-                    @(Html.Kendo().DropDownList()
-                                                .Name("ma_role")
-                                                .DataTextField("ma_role")
-                                                .DataValueField("ten_role")
-                                                .HtmlAttributes(new { @class = "span12" })
-                                                .Filter("contains")
-                                                .OptionLabel("-- Quyền --")
-                                                .BindTo(ViewBag.ListRole)
-                                                .Value("#=ma_role != null ? ma_role : null #")
-                                                .ToClientTemplate()
-                    )
-                </div>
-            </div>
-            <div class="col-sm-6">
-                <label class="control-label">Hình ảnh</label>
-                <div class="controls">
-                    <img class="img-avartar" src="#=avartar!=null ? avartar :'/Picture/doremon.png'#" id="avartar">
-                </div>
-                <div class="controls">
-                    <label style="border-radius: 10px;" class="btn btn-white btn-info btn-sm">
-                        Chọn ảnh
-                        <input id="avartarFile" type="file" style="display:none" class="form-control" accept="image/png, image/jpeg, image/jpg" />
-                    </label>
-                </div>
+        <div class="w3-col w3-container s12 m5 l4" style="text-align:center;">
+            <img class="img-avartar" src="#=avartar!=null ? avartar : '/UploadFile/AvatarUser/doremon.png'#" id="avartarUser">
+            <div class="controls" style="margin-top:10px">
+                <label class="label-input btn btn-white btn-info btn-sm"> 
+                    Chọn ảnh
+                    <input id="avartarFile" type="file" name="avartar" style="display:none;" class="form-control" accept="image/png, image/jpeg, image/jpg" />
+                </label>
             </div>
         </div>
     </div>
 </script>
 
-<script>
 
+<script>
+    
     $(document).ready(function () {
         $("#quan-ly-nguoi-dung").addClass("active");
     });
@@ -266,14 +238,85 @@
         $("#editAdd").modal('show');
         $('.modal-title label').text('').append('Chỉnh sửa người dùng');
         loadForm(data);
-        $('select[name="gioi_tinh"]').val(data.gioi_tinh).trigger('chosen:updated');
-        $('select[name="ma_role"]').val(data.ma_role).trigger('chosen:updated');
+        $('#gioi_tinh').val(data.ten_tham_so);
     }
 
     function loadForm(data) {
         var EditAddTemplate = kendo.template($("#EditAddTemplate").html());
         $(".editAdd").html(EditAddTemplate(data));
-        //Validate()
+        $('.date-picker').datepicker({ format: 'dd/mm/yyyy', autoclose: true, todayHighlight: true });
+        $('#avartarFile').unbind().change(function () {
+            readURL($(this));
+        });
+        ValidateUpdateProfile();
+    }
+
+    function SaveProfile() {
+        $("#createUpdateProfileForm").submit();
+    }
+
+    function ValidateUpdateProfile() {
+        $.validator.setDefaults({ ignore: ":hidden:not(select)" })
+        $("#createUpdateProfileForm").validate({
+            rules: {
+                'ho_ten_nguoi_dung': { required: true },
+                'sdt': { required: true },
+                'cmnd': { required: true },
+                'email': { required: true },
+            },
+            messages: {
+                'ho_ten_nguoi_dung': { required: "Thông tin bắt buộc" },
+                'sdt': { required: "Thông tin bắt buộc" },
+                'cmnd': { required: "Thông tin bắt buộc" },
+                'email': { required: "Thông tin bắt buộc" },
+            },
+            errorPlacement: function (error, element) {
+            },
+            submitHandler: function (form) {
+                $(form).ajaxSubmit({
+                    clearForm: false,
+                    beforeSend: function () {
+                        blockUI(true);
+                    },
+                    success: function (data) {
+                        blockUI(false);
+                        if (data.success) {
+                            $("#editAdd").modal('hide');
+                            $.gritter.add({
+                                text: "Thành công",
+                                class_name: 'gritter-success'
+                            });
+                            $("#grid").data("kendoGrid").dataSource.read();
+                        }
+                        else {
+                            $.gritter.add({
+                                text: "Lỗi: " + data.error,
+                                class_name: 'gritter-error'
+                            });
+                        }
+                    }
+                });
+                return false;
+            }
+        });
+    }
+
+    function readURL(input) {
+        if (input[0].files && input[0].files[0]) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                var data = reader.result;
+                if (data.match(/^data:image\//)) {
+                    $("#avartarUser").attr("src", e.target.result);
+                } else {
+                    $.gritter.add({
+                        text: "Vui lòng chọn hình ảnh!",
+                        class_name: 'gritter-error'
+                    });
+                }
+            };
+            reader.readAsDataURL(input[0].files[0]);
+        }
     }
 
     //resize grid
@@ -288,13 +331,21 @@
         var contentlock = $("#grid").find(".k-grid-content-locked");
         contentlock.height(h - number - 17);
     }
-
+    //
     function checkAllDetail(e) {
         var x = $(e).prop('checked');
         $("#grid").find(".checkrowid").each(function () {
             $(this).prop('checked', x);
         });
     }
-
+    //
+    function blockUI(isMark) {
+        if (isMark) {
+            $(document).ajaxStart($.blockUI({ message: '<i class="fa fa-spinner fa-3x fa-lg fa-spin txt-color-blueDark"></i>', theme: false })).ajaxStop($.unblockUI);
+        }
+        else {
+            $(document).ajaxStart($.blockUI({ message: '<i class="fa fa-spinner fa-3x fa-lg fa-spin txt-color-blueDark"></i>', theme: false, overlayCSS: { backgroundColor: 'transparent' } })).ajaxStop($.unblockUI);
+        }
+    }
 </script>
 

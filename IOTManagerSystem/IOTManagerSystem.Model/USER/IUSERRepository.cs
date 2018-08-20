@@ -12,7 +12,9 @@ namespace IOTManagerSystem.Model.USER
         USERModel CheckLogin(USERModel user);
         void UpdateThoiGianLoginGmail(string ma_nguoi_dung, string thoi_gian_login_gmail);
 
-        USERModel GetByEmail(string email);
+        IEnumerable<USERModel> GetByEmail(string email);
         USERModel GetByMaUser(string ma_nguoi_dung);
+
+        IEnumerable<USERModel> GetAllUsers();
     }
 }

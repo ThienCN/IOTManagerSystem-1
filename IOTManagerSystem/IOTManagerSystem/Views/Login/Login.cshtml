@@ -116,7 +116,7 @@
 
     <script>
         var authenticationType, email;
-
+        
         function Login() {
             blockUI(true);
             //Check login
@@ -252,11 +252,11 @@
                 email: email
             }, function (result) {
                 blockUI(false);
-                if (result.ma_role == 'admin')
+                if (result == 'admin')
                     window.location.assign("PageAdmin");
-                if (result.ma_role == 'employee')
+                else if (result == 'employee')
                     window.location.assign("PageEmployee");
-                if (result.ma_role == 'user')
+                else if (result == 'user')
                     window.location.assign("PageUser");
             });
         }

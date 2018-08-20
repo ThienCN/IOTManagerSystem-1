@@ -28,19 +28,20 @@ namespace IOTManagerSystem.API.Controllers
         [HttpPost]
         public bool SendAuthenticationSMS([FromBody] USERModel user)
         {
-            USERModel temp = new USERRepository().GetByEmail(user.email);
-
-            //Xác thực bằng số điện thoại
-            return AUTHENTICATIONRepository.SendVerifySMS(temp.sdt, "84");
+            var temp = new USERRepository().GetByEmail(user.email);
+            if(temp != null)               
+                return AUTHENTICATIONRepository.SendVerifySMS(temp.First().sdt, "84"); //Xác thực bằng số điện thoại
+            return false;
         }
 
         [Route("CheckAuthenticationLoginSMS")]
         [HttpPost] 
         public bool CheckAuthenticationLoginSMS([FromBody] USERModel user)
         {
-            USERModel temp = new USERRepository().GetByEmail(user.email);
-            //Xác thực bằng số điện thoại
-            return AUTHENTICATIONRepository.VerifySMSCode(temp.sdt, "84", user.ma_code_xac_thuc); ;
+            var temp = new USERRepository().GetByEmail(user.email);
+            if (temp != null)
+                AUTHENTICATIONRepository.VerifySMSCode(temp.First().sdt, "84", user.ma_code_xac_thuc); //Xác thực bằng số điện thoại
+            return false;
         }
 
         [Route("SendAuthenticationGmail")]
@@ -85,24 +86,31 @@ namespace IOTManagerSystem.API.Controllers
         [HttpPost]
         public string SendAuthenticationGG([FromBody] USERModel user)
         {
-            USERModel temp = new USERRepository().GetByEmail(user.email);
-            //Two Factor Authentication Setup
-            TwoFactorAuthenticator TwoFacAuth = new TwoFactorAuthenticator();
-            string UserUniqueKey = (temp.ma_nguoi_dung + "HoangPhung");
-
-            var setupInfo = TwoFacAuth.GenerateSetupCode("IOT Manager System", temp.ma_nguoi_dung, UserUniqueKey, 200, 200);
-            return setupInfo.QrCodeSetupImageUrl;
+            var temp = new USERRepository().GetByEmail(user.email);
+            if (temp != null)
+            {
+                //Two Factor Authentication Setup
+                TwoFactorAuthenticator TwoFacAuth = new TwoFactorAuthenticator();
+                string UserUniqueKey = (temp.First().ma_nguoi_dung + "HoangPhung");
+                var setupInfo = TwoFacAuth.GenerateSetupCode("IOT Manager System", temp.First().ma_nguoi_dung, UserUniqueKey, 200, 200);
+                return setupInfo.QrCodeSetupImageUrl;
+            }
+            return null;
         }
 
         [Route("CheckAuthenticationLoginGG")]
         [HttpPost]
         public bool CheckAuthenticationLoginGG([FromBody] USERModel user)
         {
-            USERModel temp = new USERRepository().GetByEmail(user.email);
-            TwoFactorAuthenticator TwoFacAuth = new TwoFactorAuthenticator();
-            string UserUniqueKey = (temp.ma_nguoi_dung + "HoangPhung");
-            bool isValid = TwoFacAuth.ValidateTwoFactorPIN(UserUniqueKey, user.ma_code_xac_thuc);
-            return isValid;
+            var temp = new USERRepository().GetByEmail(user.email);
+            if (temp != null)
+            {
+                TwoFactorAuthenticator TwoFacAuth = new TwoFactorAuthenticator();
+                string UserUniqueKey = (temp.First().ma_nguoi_dung + "HoangPhung");
+                bool isValid = TwoFacAuth.ValidateTwoFactorPIN(UserUniqueKey, user.ma_code_xac_thuc);
+                return isValid;
+            }
+            return false;
         }
     }
 }
