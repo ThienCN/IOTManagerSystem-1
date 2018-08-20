@@ -52,6 +52,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ACCESSRIGHT\ACCESSRIGHTModel.cs" />
+    <Compile Include="ACCESSRIGHT\IACCESSRIGHTRepository.cs" />
     <Compile Include="Core\Interfaces\IRepository.cs" />
     <Compile Include="ErrorModel.cs" />
     <Compile Include="PARAMETER\IPARAMETERRepository.cs" />
@@ -60,6 +62,8 @@
     <Compile Include="ResponseModel.cs" />
     <Compile Include="ROLE\IROLERepository.cs" />
     <Compile Include="ROLE\ROLEModel.cs" />
+    <Compile Include="TEST\ProvinceMe.cs" />
+    <Compile Include="TEST\ProvinceRoot.cs" />
     <Compile Include="USER\USERModel.cs" />
     <Compile Include="USER\IUSERRepository.cs" />
   </ItemGroup>

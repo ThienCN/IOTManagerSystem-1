@@ -25,11 +25,11 @@ namespace IOTManagerSystem.Controllers
 
         [AllowAnonymous]
         [HttpPost]
-        public JsonResult SaveLogin(string email)
+        public ActionResult SaveLogin(string email)
         {
-            USERModel user = new USERRepository().GetByEmail(email);
+            USERModel user = new USERRepository().GetByEmail(email).First();
             SaveLoginInfo(user);
-            return Json(user);
+            return Json(user.ma_role);
         }
 
         [AllowAnonymous]
@@ -45,7 +45,7 @@ namespace IOTManagerSystem.Controllers
             var email = arr[0]; 
             var time = DateTime.ParseExact(arr[1], "ddMMyyyyHHmmss", CultureInfo.InvariantCulture);
 
-            USERModel user = new USERRepository().GetByEmail(email);
+            USERModel user = new USERRepository().GetByEmail(email).First();
 
             if(arr[1] == user.thoi_gian_login_gmail)
             {
@@ -56,7 +56,8 @@ namespace IOTManagerSystem.Controllers
                     if (user.ma_role == "admin")
                         return RedirectToAction("Index", "PageAdmin");
                     if (user.ma_role == "employee")
-                        return RedirectToAction("Index", "PageUser");
+                        return RedirectToAction("Index", "PageEmployee");
+                    return RedirectToAction("Index", "PageUser");
                 }
                 return RedirectToAction("Index", "Login");
             }
@@ -89,9 +90,9 @@ namespace IOTManagerSystem.Controllers
                             );
 
             string encryptedTicket = FormsAuthentication.Encrypt(authTicket);
+            //var authCookie = new HttpCookie("SMARTPARK", encryptedTicket);
             var authCookie = new HttpCookie(FormsAuthentication.FormsCookieName, encryptedTicket);
             Response.Cookies.Add(authCookie);
         }
-        
     }
 }

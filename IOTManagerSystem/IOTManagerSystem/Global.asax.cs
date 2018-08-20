@@ -24,6 +24,7 @@ namespace IOTManagerSystem
 
         protected void Application_AuthenticateRequest(Object sender, EventArgs e)
         {
+            //HttpCookie authCookie = Context.Request.Cookies["SMARTPARK"];
             HttpCookie authCookie = Context.Request.Cookies[FormsAuthentication.FormsCookieName];
             if (authCookie == null || authCookie.Value == "")
                 return;
