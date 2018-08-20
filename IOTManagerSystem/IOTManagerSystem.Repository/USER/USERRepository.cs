@@ -82,31 +82,14 @@ namespace IOTManagerSystem.Repository.USER
             param.Add("ngay_sinh", model.ngay_sinh);
             param.Add("noi_sinh", model.noi_sinh);
             param.Add("avartar", model.avartar);
-<<<<<<< HEAD
             param.Add("mat_khau", model.mat_khau);
             param.Add("id_role", 2);
-=======
->>>>>>> 42c621826031385ca0cfeac5af05db2a4cc11e22
             param.Add("type", "updateuser");
 
             return Execute<USERModel>("spUSER", CommandType.StoredProcedure, param);
         }
 
-<<<<<<< HEAD
         public IEnumerable<USERModel> GetByEmail(string email)
-=======
-        public bool UpdatePassword(string ma_nguoi_dung, string mat_khau)
-        {
-            DynamicParameters param = new DynamicParameters();
-            param.Add("ma_nguoi_dung", ma_nguoi_dung);
-            param.Add("mat_khau", mat_khau);
-            param.Add("type", "updatepassworduser");
-
-            return Execute<USERModel>("spUSER", CommandType.StoredProcedure, param);
-        }
-
-        public USERModel GetByEmail(string email)
->>>>>>> 42c621826031385ca0cfeac5af05db2a4cc11e22
         {
             DynamicParameters param = new DynamicParameters();
             param.Add("email", email);
