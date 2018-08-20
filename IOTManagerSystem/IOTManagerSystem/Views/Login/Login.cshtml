@@ -116,31 +116,7 @@
 
     <script>
         var authenticationType, email;
-
-        $(document).ready(function () {
-            //TEST
-            $.get('http://localhost:6060/api/test/getallnull', function (result) {
-                $.each(result, function (value, index) {
-                    console.log(value + ", " + index.ten_tinh_thanh_pho);
-
-                    $.get('http://222.255.250.245:502/api/province', function (result) {
-                        $.each(result, function (value, index) {
-                            console.log(value + ", " + index.ProvinceName);
-
-                            if (index.ProvinceName == index.ten_tinh_thanh_pho) {
-                                console.log(index.ProvinceCode2);
-                            }
-                        })
-                    });
-
-
-                })
-            });
-
-
-        });
-
-
+        
         function Login() {
             blockUI(true);
             //Check login

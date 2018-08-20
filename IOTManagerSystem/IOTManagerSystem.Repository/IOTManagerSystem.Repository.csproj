@@ -61,7 +61,6 @@
     <Compile Include="PARAMETER\PARAMETERRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ROLE\ROLERepository.cs" />
-    <Compile Include="TEST\ProvinceRootRes.cs" />
     <Compile Include="USER\USERRepository.cs" />
   </ItemGroup>
   <ItemGroup>

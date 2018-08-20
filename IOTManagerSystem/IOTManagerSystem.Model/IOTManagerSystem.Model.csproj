@@ -62,8 +62,6 @@
     <Compile Include="ResponseModel.cs" />
     <Compile Include="ROLE\IROLERepository.cs" />
     <Compile Include="ROLE\ROLEModel.cs" />
-    <Compile Include="TEST\ProvinceMe.cs" />
-    <Compile Include="TEST\ProvinceRoot.cs" />
     <Compile Include="USER\USERModel.cs" />
     <Compile Include="USER\IUSERRepository.cs" />
   </ItemGroup>
