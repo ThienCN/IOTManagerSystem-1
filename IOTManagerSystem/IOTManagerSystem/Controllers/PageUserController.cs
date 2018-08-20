@@ -17,7 +17,7 @@ namespace IOTManagerSystem.Controllers
     [Authorize(Roles = "user")]
     public class PageUserController : CustomController
     {
-        // GET: PageUser.
+        // GET: PageUser
         public ActionResult Index()
         {
             if (loginedUser == null)
